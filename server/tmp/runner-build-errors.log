@@ -1,2 +1,0 @@
-# ACA-Dashboard/server/vendor/db
-vendor\db\db.go:66:23: cannot convert funds (type []Fund) to type string
