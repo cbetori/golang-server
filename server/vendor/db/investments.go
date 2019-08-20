@@ -8,6 +8,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
+	"gopkg.in/guregu/null.v3"
 )
 
 type InvestmentsDetial struct {
@@ -57,23 +59,23 @@ func GetInvestmentsTbl(w http.ResponseWriter, r *http.Request) {
 }
 
 type Investments struct {
-	InvID         int            `json:"InvID"`
-	VID           int            `json:"VID"`
-	CID           int            `json:"CID"`
-	SID           string         `json:SID"`
-	Feeder        string         `json:"Feeder"`
-	InvType       string         `json:"Inv_Type"`
-	DateInv       sql.NullString `json:"Date_Inv"`
-	DateEliminate sql.NullString `json:"Date_Eliminate"`
-	AccountName   string         `json:"Account_Name"`
-	GrossCapital  float32        `json:"Gross_Capital"`
-	NetCaptial    float32        `json:"Net_Captial"`
+	InvID         int         `json:"InvID"`
+	VID           int         `json:"VID"`
+	CID           int         `json:"CID"`
+	SID           string      `json:SID"`
+	Feeder        string      `json:"Feeder"`
+	InvType       string      `json:"Inv_Type"`
+	DateInv       string      `json:"Date_Inv"`
+	DateEliminate null.String `json:"Date_Eliminate"`
+	AccountName   string      `json:"Account_Name"`
+	GrossCapital  float32     `json:"Gross_Capital"`
+	NetCaptial    float32     `json:"Net_Captial"`
 }
 
 func GetInvestments(w http.ResponseWriter, r *http.Request) {
 	queryResult := []Investments{}
 	sqlStatement := `SELECT "tblIDB_Investments"."InvID", "tblIDB_Investments"."VID", "tblIDB_Investments"."CID", "tblIDB_Investors"."SID", ` +
-		`"tblIDB_Investments"."Feeder", "tblIDB_Investments"."Inv_Type" ,  "tblIDB_Investments"."Date_Inv",` +
+		`"tblIDB_Investments"."Feeder", "tblIDB_Investments"."Inv_Type" , "tblIDB_Investments"."Date_Inv",` +
 		`"tblIDB_Investments"."Date_Eliminate", "tblIDB_Investors"."Account_Name", ` +
 		`"tblIDB_Investments"."Gross_Capital", "tblIDB_Investments"."Net_Capital"` +
 		`FROM "tblIDB_Investments" ` +
@@ -90,6 +92,12 @@ func GetInvestments(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		//Clean Up Dates
+		r.DateInv = r.DateInv[0:10]
+		if r.DateEliminate.String != "" {
+			r.DateEliminate.String = r.DateEliminate.String[0:10]
+		}
+		//Creates final string
 		queryResult = append(queryResult, r)
 	}
 	result, err := json.Marshal(queryResult)
@@ -128,4 +136,17 @@ func GetInvestment(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	fmt.Fprintf(w, string(result))
+}
+
+type InvestmentAll struct {
+	details   string "json:`details`"
+	cashflows string
+}
+
+func GetInvestmentAll(w http.ResponseWriter, r *http.Request) {
+	cash := GetInvestmentsInvIDCFDistro
+	dets := GetInvestmentInvIDCF
+	InvestmentAll{details: dets, cashflows: cash}
+	fmt.Println(cash)
+	fmt.Println(dets)
 }

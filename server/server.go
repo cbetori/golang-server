@@ -55,8 +55,11 @@ func main() {
 	r.HandleFunc("/api/investments/{id}", db.GetInvestment).Methods("GET")
 	r.HandleFunc("/api/investmentsdetail", db.GetInvestmentsTbl).Methods("GET")
 
+	r.HandleFunc("/api/investors", db.GetInvestments).Methods("GET")
+	r.HandleFunc("/api/investors/invid/{id}", db.GetInvestmentAll).Methods("GET")
+
 	r.HandleFunc("/api/cf/invid/{id}", db.GetInvestmentInvIDCF).Methods("GET")
-	r.HandleFunc("/api/cf/distro/invid/{id}", db.GetInvestmentsInvIDCFDistro).Methods("GET")
+	r.HandleFunc("/api/cf/distro/invid", db.GetInvestmentsInvIDCFDistro).Methods("GET")
 
 	r.HandleFunc("/api/funds/{id}", getFund).Methods("GET")
 	r.HandleFunc("/api/funds", createFund).Methods("POST")

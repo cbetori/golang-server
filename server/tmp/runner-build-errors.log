@@ -1,0 +1,4 @@
+# golang-server/server/vendor/db
+vendor/db/investments.go:149:15: InvestmentAll literal evaluated but not used
+vendor/db/investments.go:149:23: cannot use dets (type func(http.ResponseWriter, *http.Request)) as type string in field value
+vendor/db/investments.go:149:40: cannot use cash (type func(http.ResponseWriter, *http.Request)) as type string in field value
