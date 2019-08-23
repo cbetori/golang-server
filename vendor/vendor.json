@@ -45,5 +45,9 @@
 			"revisionTime": "2019-08-23T17:02:09Z"
 		}
 	],
-	"rootPath": "ACA-Dashboard"
+	"rootPath": "ACA-Dashboard",
+	"heroku": {
+        "install" : [ "./..." ],
+        "goVersion": "go1.12.8"
+         }
 }
