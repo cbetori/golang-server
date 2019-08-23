@@ -62,9 +62,6 @@ func main() {
 	// db.ConnectionString()
 	db.Connection()
 	// Route Handlers / Endpoints
-	spa := spaHandler{staticPath: "client/build", indexPath: "index.html"}
-	r.PathPrefix("/").Handler(spa)
-
 	r.HandleFunc("/api", apiHandler).Methods("GET")
 
 	r.HandleFunc("/api/funds", controller.FundsHandler).Methods("GET")
@@ -86,7 +83,8 @@ func main() {
 	// r.HandleFunc("/api/funds", createFund).Methods("POST")
 	// r.HandleFunc("/api/funds/{id}", updateFund).Methods("PUT")
 	// r.HandleFunc("/api/funds/{id}", deleteFund).Methods("DELETE")
-
+	spa := spaHandler{staticPath: "client/build", indexPath: "index.html"}
+	r.PathPrefix("/").Handler(spa)
 	// Start Server and Listen
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }
