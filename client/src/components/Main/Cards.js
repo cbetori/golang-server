@@ -1,7 +1,7 @@
 import React from "react";
 import { Row } from 'antd'
 import InvestmentsContainer from '../../containers/InvestmentsContainer'
-import { DistroCardsContainer } from '../../containers/DistributionContainer'
+import { DistroCardsContainer } from '../../containers/DistributionTotalsContainer'
 
 function Cards(){
     return(

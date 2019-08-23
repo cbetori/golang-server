@@ -2,9 +2,9 @@ import React from "react";
 import { Statistic, Card, Col, Icon } from 'antd'
 
 function InvestmentsCard(props) {
-    let investmentInfo = props.investments.length
-    let investmentGrossCapital = props.investments.reduce((a, b)=>a + b.Gross_Capital,0)
-    let investmentNetCapital = props.investments.reduce((a, b)=>a + b.Net_Capital,0)
+    let investmentInfo = props.fundsSize.reduce((a, b)=>a + b.InvID_Count,0)
+    let investmentGrossCapital = props.fundsSize.reduce((a, b)=>a + b.Sum_of_Gross_Capital,0)
+    let investmentNetCapital = props.fundsSize.reduce((a, b)=>a + b.Sum_of_Net_Capital,0)
   return (
     <React.Fragment>
         <Col span={3}>

@@ -77,6 +77,82 @@ func GetInvestmentsInvIDCFDistro(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(result))
 }
 
+type CFTotalsFund struct {
+	Gross      float32 `json:"Gross_Total`
+	Special    float32 `json:"Special_Total`
+	Composite  float32 `json:"Composite_Total`
+	Tax        float32 `json:"Tax_Total`
+	Management float32 `json:"Management_Total`
+	Servicing  float32 `json:"Servicing_Total`
+}
+
+func GetCFTotalsFund(r *http.Request) string {
+	queryResult := []CFTotalsFund{}
+	sqlStatement :=
+		`SELECT SUM(CASE WHEN "CFID" = ` + "'G'" + ` THEN "tblIDB_Investments_CF"."CF_Amount" END) Gross_Total, ` +
+			`SUM(CASE WHEN "CFID" = ` + "'S'" + ` THEN "tblIDB_Investments_CF"."CF_Amount" END) Special_Total, ` +
+			`SUM(CASE WHEN "CFID" = ` + "'Q'" + ` THEN "tblIDB_Investments_CF"."CF_Amount" END) Composite_Total, ` +
+			`SUM(CASE WHEN "CFID" = ` + "'Y'" + ` THEN "tblIDB_Investments_CF"."CF_Amount" END) Tax_Total, ` +
+			`SUM(CASE WHEN "CFID" = ` + "'M'" + ` THEN "tblIDB_Investments_CF"."CF_Amount" END) Mangement_Total, ` +
+			`SUM(CASE WHEN "CFID" = ` + "'V'" + ` THEN "tblIDB_Investments_CF"."CF_Amount" END) Servicing_Total ` +
+			`FROM "tblIDB_Investments_CF" `
+
+	rows, err := Db.Query(sqlStatement)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var r CFTotalsFund
+		err := rows.Scan(&r.Gross, &r.Special, &r.Composite, &r.Tax, &r.Management, &r.Servicing)
+		if err != nil {
+			log.Fatal(err)
+		}
+		queryResult = append(queryResult, r)
+	}
+	result, err := json.Marshal(queryResult)
+	if err != nil {
+		panic(err)
+	}
+	return string(result)
+}
+
+type CFTotalsMonthly struct {
+	Scenario string  `json:"Scenario"`
+	CFID     string  `json:"CFID"`
+	CodeName string  `json:"Code_Name"`
+	CFDate   string  `json:"CF_Date"`
+	CFAmount float64 `json:"CF_Amount"`
+}
+
+func GetCFTotalsMonthly(r *http.Request) string {
+	queryResult := []CFTotalsMonthly{}
+	sqlStatement :=
+		`SELECT "Scenario", a."CFID","Code_Name", "CF_Date",SUM("CF_Amount") AS CF_Amount ` +
+			`FROM "tblIDB_Investments_CF" AS "a"` +
+			`INNER JOIN "tblIDB_Investments_CF_IDs" AS B ON a."CFID" = b."CFID"` +
+			`WHERE "Scenario"=` + "'Actual'" +
+			`GROUP BY "CF_Date", a."CFID", "Scenario", "Code_Name"`
+	rows, err := Db.Query(sqlStatement)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var r CFTotalsMonthly
+		err := rows.Scan(&r.Scenario, &r.CFID, &r.CodeName, &r.CFDate, &r.CFAmount)
+		if err != nil {
+			log.Fatal(err)
+		}
+		queryResult = append(queryResult, r)
+	}
+	result, err := json.Marshal(queryResult)
+	if err != nil {
+		panic(err)
+	}
+	return string(result)
+}
+
 // type Investments struct {
 // 	InvID         int            `json:"InvID"`
 // 	VID           int            `json:"VID"`

@@ -18,7 +18,7 @@ export function loadFunds() {
 
 export function loadFundsSize() {
   return function (dispatch) {
-    fetch("/api/fundssumgrosscap")
+    fetch("/api/fundstotals")
     .then( (response) => {
       return response.json();
     }).then((res) => {
@@ -52,7 +52,7 @@ function investmentsLoaded(res) {
 
 export function loadDistributions() {
   return function (dispatch) {
-    fetch("/api/cf/distro/invid")
+    fetch("/api/cf/totals/monthly")
     .then( (response) => {
       return response.json();
     }).then((res) => {
@@ -63,6 +63,24 @@ export function loadDistributions() {
 function distributionsLoaded(res) {
   return {
     type: "DISTRIBUTIONS_LOADED",
+    value: res
+  };
+}
+
+export function loadcfTotals() {
+  return function (dispatch) {
+    fetch("/api/cf/totals")
+    .then( (response) => {
+      return response.json();
+    }).then((res) => {
+      dispatch(cfTotalsLoaded(res));
+    });
+  };
+}
+
+function cfTotalsLoaded(res) {
+  return {
+    type: "CFTOTALS_LOADED",
     value: res
   };
 }

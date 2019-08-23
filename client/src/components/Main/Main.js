@@ -3,7 +3,8 @@ import { Layout } from 'antd'
 import Cards from './Cards'
 import FundsSizeContainer from '../../containers/FundsSizeContainer'
 import {FundsCardResult} from '../../containers/FundsContainer'
-import { DistroChartContainer, DistroFunnelContainer } from '../../containers/DistributionContainer'
+import { DistroChartContainer } from '../../containers/DistributionContainer'
+import { DistroFunnelContainer } from '../../containers/DistributionTotalsContainer'
 
 //const { Content } = Layout;
 

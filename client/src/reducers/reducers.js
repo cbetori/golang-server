@@ -28,6 +28,13 @@ function distributions(state =[], action){
   return state
 }
 
+function cfTotals(state =[], action){
+  if (action.type === 'CFTOTALS_LOADED'){
+    return action.value
+  }
+  return state
+}
+
 function investors(state =[], action){
   if (action.type === 'INVESTORS_LOADED'){
     return action.value
@@ -45,6 +52,6 @@ function investorsInvID(state =[], action){
 
 
 const rootReducer = combineReducers({
-    funds, fundsSize, investments, distributions, investors, investorsInvID
+    funds, fundsSize, investments, distributions, investors, investorsInvID, cfTotals
   });
   export default rootReducer;

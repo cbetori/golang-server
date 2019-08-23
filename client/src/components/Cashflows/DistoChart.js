@@ -32,6 +32,7 @@ function DistroChart(props) {
                         case "Composite Tax Distro":
                             comp_distro = comp_distro + Math.round(props.distributions[i].CF_Amount)
                         break
+                        default:
                     }
                     
                 }

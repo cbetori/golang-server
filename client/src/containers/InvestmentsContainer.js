@@ -3,7 +3,8 @@ import InvestmentsCard from "../components/Investments/InvestmentsCard";
 
 function mapStateToProps(state) {
   return {
-    investments: state.investments
+    investments: state.investments,
+    fundsSize: state.fundsSize
   };
 }
 

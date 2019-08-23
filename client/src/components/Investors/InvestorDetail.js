@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
-import { Card, Input, Modal, Table, Button, Form, FormGroup } from 'antd'
+import { Card, Input, Modal, Table, Button } from 'antd'
 import { useSelector } from 'react-redux'
 //import TableSelect from '../Reusable/TableSelect'
 import moment from 'moment'
 import numeral from 'numeral'
-import { updateInvestorCashFlow }  from '../../actions/actions'
+// import { updateInvestorCashFlow }  from '../../actions/actions'
 
 
 function InvestorDetail (props) {

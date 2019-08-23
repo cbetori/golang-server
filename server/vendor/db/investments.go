@@ -72,7 +72,7 @@ type Investments struct {
 	NetCaptial    float32     `json:"Net_Captial"`
 }
 
-func GetInvestments(w http.ResponseWriter, r *http.Request) {
+func GetInvestments(r *http.Request) string{
 	queryResult := []Investments{}
 	sqlStatement := `SELECT "tblIDB_Investments"."InvID", "tblIDB_Investments"."VID", "tblIDB_Investments"."CID", "tblIDB_Investors"."SID", ` +
 		`"tblIDB_Investments"."Feeder", "tblIDB_Investments"."Inv_Type" , "tblIDB_Investments"."Date_Inv",` +
@@ -104,12 +104,12 @@ func GetInvestments(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Fprintf(w, string(result))
+	return string(result)
 }
 
-func GetInvestment(w http.ResponseWriter, r *http.Request) {
+func GetInvestment(r *http.Request) string {
 	vars := mux.Vars(r)
-	queryResult := []Investments{}
+	var i Investments
 	sqlStatement := `SELECT "tblIDB_Investments"."InvID", "tblIDB_Investments"."VID", "tblIDB_Investments"."CID", "tblIDB_Investors"."SID", ` +
 		`"tblIDB_Investments"."Feeder", "tblIDB_Investments"."Inv_Type" ,  "tblIDB_Investments"."Date_Inv",` +
 		`"tblIDB_Investments"."Date_Eliminate", "tblIDB_Investors"."Account_Name", ` +
@@ -118,35 +118,23 @@ func GetInvestment(w http.ResponseWriter, r *http.Request) {
 		`INNER JOIN "tblIDB_Investors"` +
 		`ON  "tblIDB_Investments"."VID" = "tblIDB_Investors"."VID"` +
 		`WHERE "InvID" =` + vars["id"]
-	rows, err := Db.Query(sqlStatement)
+	err := Db.QueryRow(sqlStatement).Scan(&i.InvID, &i.VID, &i.CID, &i.SID, &i.Feeder, &i.InvType, &i.DateInv, &i.DateEliminate, &i.AccountName, &i.GrossCapital, &i.NetCaptial)
+	if err != nil {
+		log.Fatal(err)
+	}
+	result, err := json.Marshal(i)
 	if err != nil {
 		panic(err)
 	}
-	defer rows.Close()
-	for rows.Next() {
-		var r Investments
-		err := rows.Scan(&r.InvID, &r.VID, &r.CID, &r.SID, &r.Feeder, &r.InvType, &r.DateInv, &r.DateEliminate, &r.AccountName, &r.GrossCapital, &r.NetCaptial)
-		if err != nil {
-			log.Fatal(err)
-		}
-		queryResult = append(queryResult, r)
-	}
-	result, err := json.Marshal(queryResult)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Fprintf(w, string(result))
+	return string(result)
 }
 
-type InvestmentAll struct {
-	details   string "json:`details`"
-	cashflows string
-}
 
-func GetInvestmentAll(w http.ResponseWriter, r *http.Request) {
-	cash := GetInvestmentsInvIDCFDistro
-	dets := GetInvestmentInvIDCF
-	InvestmentAll{details: dets, cashflows: cash}
-	fmt.Println(cash)
-	fmt.Println(dets)
-}
+
+// func GetInvestment(w http.ResponseWriter, r *http.Request) {
+// 	x := other(r)
+// 	y := other(r)
+
+// 	t := "{cash:" + x + ",money:" + y + "}"
+// 	fmt.Fprintf(w, t)
+// }

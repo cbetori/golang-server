@@ -23,6 +23,7 @@ class App extends Component {
     this.props.loadInvestments();
     this.props.loadDistributions();
     this.props.loadInvestorsInvID();
+    this.props.loadcfTotals()
     // this.props.updateInvestorCashFlow();
   }
 
