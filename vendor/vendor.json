@@ -1,0 +1,56 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "5Gw2jINa4yVp4wMujCf7wwMcfRQ=",
+			"origin": "ACA-Dashboard/vendor/github.com/gorilla/mux",
+			"path": "github.com/gorilla/mux",
+			"revision": "1b3e29ec85699ae51de470e0974d1a3d03755473",
+			"revisionTime": "2019-08-23T17:02:09Z"
+		},
+		{
+			"checksumSHA1": "TsYJAg5Rcy8Oq2YowemRNU3ce2g=",
+			"origin": "ACA-Dashboard/vendor/github.com/joho/godotenv",
+			"path": "github.com/joho/godotenv",
+			"revision": "1b3e29ec85699ae51de470e0974d1a3d03755473",
+			"revisionTime": "2019-08-23T17:02:09Z"
+		},
+		{
+			"checksumSHA1": "6ZVvq9gdocZXtsQpVPcQWWmZIf8=",
+			"origin": "ACA-Dashboard/vendor/github.com/joho/godotenv/autoload",
+			"path": "github.com/joho/godotenv/autoload",
+			"revision": "1b3e29ec85699ae51de470e0974d1a3d03755473",
+			"revisionTime": "2019-08-23T17:02:09Z"
+		},
+		{
+			"checksumSHA1": "rzptgFeOQbuYGWFESUmMh/uHWrY=",
+			"origin": "ACA-Dashboard/vendor/github.com/lib/pq",
+			"path": "github.com/lib/pq",
+			"revision": "1b3e29ec85699ae51de470e0974d1a3d03755473",
+			"revisionTime": "2019-08-23T17:02:09Z"
+		},
+		{
+			"checksumSHA1": "GX2hcQP8YqrXH+laJJIxUFsqoxU=",
+			"origin": "ACA-Dashboard/vendor/github.com/lib/pq/oid",
+			"path": "github.com/lib/pq/oid",
+			"revision": "1b3e29ec85699ae51de470e0974d1a3d03755473",
+			"revisionTime": "2019-08-23T17:02:09Z"
+		},
+		{
+			"checksumSHA1": "PStZaE3pKgMy1kk+hHB/of2FYBk=",
+			"origin": "ACA-Dashboard/vendor/github.com/lib/pq/scram",
+			"path": "github.com/lib/pq/scram",
+			"revision": "1b3e29ec85699ae51de470e0974d1a3d03755473",
+			"revisionTime": "2019-08-23T17:02:09Z"
+		},
+		{
+			"checksumSHA1": "Zcw2lqO57mM6F4DiBjhGZFURpLE=",
+			"origin": "ACA-Dashboard/vendor/gopkg.in/guregu/null.v3",
+			"path": "gopkg.in/guregu/null.v3",
+			"revision": "1b3e29ec85699ae51de470e0974d1a3d03755473",
+			"revisionTime": "2019-08-23T17:02:09Z"
+		}
+	],
+	"rootPath": "ACA-Dashboard/server"
+}
