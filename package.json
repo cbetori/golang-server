@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "client":"cd client/src && npm start",
+        "server":"cd vendor && fresh",
+        "start-dev": "concurrently - kill-others \"npm run server \" \"npm run client\""
+    }
+}
