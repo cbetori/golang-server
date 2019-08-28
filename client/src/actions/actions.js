@@ -1,6 +1,5 @@
 
 export function loadLogin(u) {
-
   return function (dispatch) {
     fetch("/api/login/"+u[0]+"/"+u[1])
       .then( (response) => {
@@ -8,7 +7,7 @@ export function loadLogin(u) {
       }).then((res) => {
         dispatch(loginLoaded(res));
       });
-    };
+    };  
   };
 
 function loginLoaded(res) {

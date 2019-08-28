@@ -26,7 +26,7 @@ export default class NavTop extends React.Component {
             Navigation One
           </Menu.Item>
           <SubMenu
-            style={{marginLeft:'75%' , right: 0}}
+            style={{marginLeft:'72%' , right: 0}}
             title={
               <span className="submenu-title-wrapper">
                 <Icon type="user" />

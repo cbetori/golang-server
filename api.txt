@@ -1,0 +1,42 @@
+* ROUTES                            FUNCTIONS                               REQUEST     DESCRIPTION
+
+/api                                apiHandler                              GET         Entry point
+
+/api/funds                          db.FundsHandler                         GET         Retrieves list of unique fund names
+/api/funds/{id}                     db.FundHandler                          GET         Not needed     
+/api/fundssummary                   db.FundsSummaryHandler                  GET         Retrieves highlevel items related to fund (ex: Total Contributions)
+/api/fundssummary/{id}              db.FundSummaryHandler                   GET         Not used
+
+/api/investments                    db.InvestmentsHandler                   GET         Retrieves investment information
+/api/investments/{id}               db.InvestmentHandler                    GET         Retrieves investment information by investment
+/api/investmentsdetail              db.InvestmentsDetailHandler             GET         Might be unecessary
+
+/api/investors                      db.GetInvestments                       GET         Retrieves investor information
+/api/investors/invid/{id}           db.GetInvestmentAll                     GET         Not used
+
+/api/cf/invid                       db.CashflowInvidsHandler
+/api/cf/invid/distros               db.CashflowInvidsDistrosHandler         GET
+/api/cf/invid/fees                  db.CashflowInvidsFeesHandler            GET
+/api/cf/invid/capital               db.CashflowInvidsCapitalHandler         GET
+/api/cf/invid/{id}                  db.CashflowInvidHandler                 GET         Retrieves all cashflows related to investment ID
+/api/cf/invid/distros/{id}          db.CashflowInvidDistrosHandler          GET
+/api/cf/invid/feess/{id}            db.CashflowInvidFeesHandler             GET
+/api/cf/invid/capital/{id}          db.CashflowInvidCapitalHandler          GET
+
+/api/cf/cid                         db.CashflowCidsHandler
+/api/cf/cid/distros                 db.CashflowCidsDistrosHandler         GET
+/api/cf/cid/fees                    db.CashflowCidsFeesHandler            GET
+/api/cf/cid/capital                 db.CashflowCidsCapitalHandler         GET
+/api/cf/cid/{id}                    db.CashflowCidHandler                 GET         Retrieves all cashflows related to investment ID
+/api/cf/cid/distros/{id}            db.CashflowCidDistrosHandler          GET
+/api/cf/cid/feess/{id}              db.CashflowCidFeesHandler             GET
+/api/cf/cid/capital/{id}            db.CashflowCidCapitalHandler          GET
+
+/api/cf/Sid                         db.CashflowSidsHandler
+/api/cf/Sid/distros                 db.CashflowSidsDistrosHandler         GET
+/api/cf/Sid/fees                    db.CashflowSidsFeesHandler            GET
+/api/cf/Sid/capital                 db.CashflowSidsCapitalHandler         GET
+/api/cf/Sid/{id}                    db.CashflowSidHandler                 GET         Retrieves all cashflows related to investment ID
+/api/cf/Sid/distros/{id}            db.CashflowSidDistrosHandler          GET
+/api/cf/Sid/feess/{id}              db.CashflowSidFeesHandler             GET
+/api/cf/Sid/capital/{id}            db.CashflowSidCapitalHandler          GET

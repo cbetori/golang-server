@@ -1,7 +1,7 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
 import { withRouter, Switch, Route, } from "react-router-dom";
 import "antd/dist/antd.css";
-import { Layout, Form, Input, Button} from "antd";
+import { Layout } from "antd";
 import Main from "./components/Main/Main";
 import NavTop from "./components/Layout/NavTop";
 import NavSide from "./components/Layout/NavSide";
@@ -9,7 +9,6 @@ import { InvestorsTableResults } from "./containers/InvestorsContainer"
 import { LoginContainer } from "./containers/LoginContainer"
 import { FundsCardResult } from "./containers/FundsContainer";
 import { InvestorDetailResult } from './containers/InvestorsInvIDContainer'
-import Store from './store'
 const { Content} = Layout;
 
 class App extends Component {
@@ -29,6 +28,7 @@ class App extends Component {
     this.props.loadInvestorsInvID();
     this.props.loadcfTotals();
     this.props.loadDistributionsByFund();
+    // this.props.updateInvestorCashFlow();
   }
 
   handleLogin = ()=>{
@@ -42,7 +42,6 @@ class App extends Component {
     this.unlisten = this.props.history.listen((location, action) => {
       this.props.loadInvestorsInvID();
     });
-    // this.props.updateInvestorCashFlow();
   }
 
   componentWillUnmount() {

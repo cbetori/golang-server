@@ -188,7 +188,6 @@ function InvestorDetail (props) {
                         <Input style={{margin: 5}} addonBefore='Type' defaultValue={oldModalValues.Code_Name}/>
                         <Input style={{margin: 5}} addonBefore='Date' defaultValue={oldModalValues.CF_Date}/>
                         <Input  style={{margin: 5}} addonBefore='Amount' defaultValue={oldModalValues.CF_Amount}/>
-                        <Button type="submit"  >Submit</Button>
                 </Modal>
                     <Table style={{marginRight: 75, background: '#f1f3f5'}} columns= {columns} dataSource={tableData} />
             </div>
@@ -196,10 +195,3 @@ function InvestorDetail (props) {
 }
 
 export default InvestorDetail
-
-{/* <Input  onChange={(e)=>  updateModalValues({InvID: e.target.value})}  id="InvID" addonBefore='InvID' defaultValue={oldModalValues.InvID}/>
-<Input style={{margin: 5}} addonBefore='CID' defaultValue={oldModalValues.CID}/>
-</div>
-<Input style={{margin: 5}} addonBefore='Type' defaultValue={oldModalValues.Code_Name}/>
-<Input style={{margin: 5}} addonBefore='Date' defaultValue={oldModalValues.CF_Date}/>
-<Input onChange={(e)=>  updateModalValues({CF_Amount: e.target.value})} style={{margin: 5}} addonBefore='Amount' defaultValue={oldModalValues.CF_Amount}/> */}
