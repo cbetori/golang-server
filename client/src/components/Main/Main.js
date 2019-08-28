@@ -5,6 +5,7 @@ import FundsSizeContainer from '../../containers/FundsSizeContainer'
 import {FundsCardResult} from '../../containers/FundsContainer'
 import { DistroChartContainer } from '../../containers/DistributionContainer'
 import { DistroFunnelContainer } from '../../containers/DistributionTotalsContainer'
+import { DistroFundsChartContainer } from '../../containers/DistrbutionTotalsFundsContainer'
 
 //const { Content } = Layout;
 
@@ -19,8 +20,8 @@ function Main(props) {
       </div>
       <h1 className='mainContainer'>Fund Information</h1>
       <div className='container'>
+        <DistroFundsChartContainer/>
         <FundsSizeContainer/>
-        <FundsCardResult/>
       </div>
     </Layout>
   );

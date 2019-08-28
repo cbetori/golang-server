@@ -1,5 +1,12 @@
 import {combineReducers} from "redux";
 
+function loginState(state = {}, action) {
+  if (action.type === "LOGIN_LOADED") {
+    return action.value
+  }
+  return state;
+}
+
 function funds(state = [], action) {
   if (action.type === "FUNDS_LOADED") {
     return action.value;
@@ -49,9 +56,15 @@ function investorsInvID(state =[], action){
   return state
 }
 
+function distributionsFund(state =[], action){
+  if (action.type === 'DISTRIBUTIONS_LOADED_FUNDS'){
+    return action.value
+  }
+  return state
+}
 
 
 const rootReducer = combineReducers({
-    funds, fundsSize, investments, distributions, investors, investorsInvID, cfTotals
+  loginState, funds, fundsSize, investments, distributions, investors, investorsInvID, cfTotals, distributionsFund
   });
   export default rootReducer;

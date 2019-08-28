@@ -1,4 +1,23 @@
 
+export function loadLogin(u) {
+
+  return function (dispatch) {
+    fetch("/api/login/"+u[0]+"/"+u[1])
+      .then( (response) => {
+        return response.json();
+      }).then((res) => {
+        dispatch(loginLoaded(res));
+      });
+    };
+  };
+
+function loginLoaded(res) {
+  return {
+    type: "LOGIN_LOADED",
+    value: res
+  };
+}
+
 export function loadFunds() {
     return function (dispatch) {
       fetch("/api/funds")
@@ -67,6 +86,23 @@ function distributionsLoaded(res) {
   };
 }
 
+export function loadDistributionsByFund() {
+  return function (dispatch) {
+    fetch("/api/cf/totals/funds")
+    .then( (response) => {
+      return response.json();
+    }).then((res) => {
+      dispatch(distributionsByFundLoaded(res));
+    });
+  };
+}
+function distributionsByFundLoaded(res) {
+  return {
+    type: "DISTRIBUTIONS_LOADED_FUNDS",
+    value: res
+  };
+}
+
 export function loadcfTotals() {
   return function (dispatch) {
     fetch("/api/cf/totals")
@@ -87,7 +123,7 @@ function cfTotalsLoaded(res) {
 
 export function loadInvestors() {
   return function (dispatch) {
-    fetch("/api/investors")
+    fetch("/api/investments")
     .then( (response) => {
       return response.json();
     }).then((res) => {
@@ -101,19 +137,23 @@ function investorsLoaded(res) {
     value: res
   };
 }
-
+ 
 export function loadInvestorsInvID() {
   let url = window.location.href
-  var urlsplit = url.split("/").slice(-1)[0];
-  return function (dispatch) {
-    fetch("/api/investors/invid/"+urlsplit)
-    .then( (response) => {
-      return response.json();
-    }).then((res) => {
-      dispatch(investorsLoadedInvID(res));
-    });
-  };
+  if (url.split("/").slice(-2)[0] === "invid"){
+    var urlsplit = url.split("/").slice(-1)[0];
+    return function (dispatch) {
+      fetch("/api/investments/invid/"+urlsplit)
+      .then( (response) => {
+        return response.json();
+      }).then((res) => {
+        dispatch(investorsLoadedInvID(res));
+      });
+    };
+  }
+  return investorsLoadedInvID([]);
 }
+
 function investorsLoadedInvID(res) {
   return {
     type: "INVESTORS_INVID_LOADED",
@@ -127,7 +167,7 @@ export function updateInvestorCashFlow(oldValue, newValue, row) {
   let url = window.location.href
   var urlsplit = url.split("/").slice(-1)[0];
   // return function (dispatch) {
-    fetch("/api/investors/invid/"+urlsplit+"/cf", {
+    fetch("/api/investments/invid/"+urlsplit+"/cf", {
       method: "PUT",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({row})

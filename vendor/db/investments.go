@@ -72,7 +72,7 @@ type Investments struct {
 	NetCaptial    float32     `json:"Net_Captial"`
 }
 
-func GetInvestments(r *http.Request) string{
+func GetInvestments(r *http.Request) string {
 	queryResult := []Investments{}
 	sqlStatement := `SELECT "tblIDB_Investments"."InvID", "tblIDB_Investments"."VID", "tblIDB_Investments"."CID", "tblIDB_Investors"."SID", ` +
 		`"tblIDB_Investments"."Feeder", "tblIDB_Investments"."Inv_Type" , "tblIDB_Investments"."Date_Inv",` +
@@ -128,8 +128,6 @@ func GetInvestment(r *http.Request) string {
 	}
 	return string(result)
 }
-
-
 
 // func GetInvestment(w http.ResponseWriter, r *http.Request) {
 // 	x := other(r)

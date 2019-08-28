@@ -22,9 +22,9 @@ function DistroFunnelChart(props) {
         ]
     }
   return (
-    <React.Fragment>
+    <div className='autoMargin'>
       <FunnelChartDash data={data()} title='Distribution by Type' dataKey='value' nameKey='name' shortName='shortName'/>
-    </React.Fragment>
+    </div>
   )
 }
 export default DistroFunnelChart;

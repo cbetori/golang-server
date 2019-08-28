@@ -11,7 +11,7 @@ import (
 
 	"github.com/gorilla/mux"
 	_ "github.com/joho/godotenv/autoload"
-) 
+)
 
 //Model
 type spaHandler struct {
@@ -63,26 +63,22 @@ func main() {
 	db.Connection()
 	// Route Handlers / Endpoints
 	r.HandleFunc("/api", apiHandler).Methods("GET")
+	r.HandleFunc("/api/login/{username}/{password}", controller.LoginHandler).Methods("GET")
 
 	r.HandleFunc("/api/funds", controller.FundsHandler).Methods("GET")
 	r.HandleFunc("/api/fundstotals", controller.FundsTotalsHandler).Methods("GET")
 
 	r.HandleFunc("/api/investments", controller.InvestmentsHandler).Methods("GET")
-	r.HandleFunc("/api/investments/{id}", controller.InvestmentHandler).Methods("GET")
+	r.HandleFunc("/api/investments/invid/{id}", controller.InvestmentHandler).Methods("GET")
 	r.HandleFunc("/api/investmentsdetail", db.GetInvestmentsTbl).Methods("GET")
 
 	r.HandleFunc("/api/cf/totals", controller.CFTotalsHandler).Methods("GET")
 	r.HandleFunc("/api/cf/totals/monthly", controller.CFTotalsMonthHandler).Methods("GET")
-	// r.HandleFunc("/api/investors", controller.InvestmentHandler).Methods("GET")
-	// r.HandleFunc("/api/investors/invid/{id}", db.GetInvestmentAll).Methods("GET")
+	r.HandleFunc("/api/cf/totals/funds", controller.CFTotalsFundsHandler).Methods("GET")
 
-	r.HandleFunc("/api/cf/invid/{id}", db.GetInvestmentInvIDCF).Methods("GET")
-	r.HandleFunc("/api/cf/distro/invid", db.GetInvestmentsInvIDCFDistro).Methods("GET")
+	r.HandleFunc("/api/cf/invid/{id}", controller.CashflowInvidHandler).Methods("GET")
+	r.HandleFunc("/api/cf/distro/invid", controller.CashflowInvidDistrosHandler).Methods("GET")
 
-	// r.HandleFunc("/api/funds/{id}", getFund).Methods("GET")
-	// r.HandleFunc("/api/funds", createFund).Methods("POST")
-	// r.HandleFunc("/api/funds/{id}", updateFund).Methods("PUT")
-	// r.HandleFunc("/api/funds/{id}", deleteFund).Methods("DELETE")
 	spa := spaHandler{staticPath: "client/build", indexPath: "index.html"}
 	r.PathPrefix("/").Handler(spa)
 	// Start Server and Listen

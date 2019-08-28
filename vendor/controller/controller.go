@@ -6,6 +6,13 @@ import (
 	"net/http"
 )
 
+//USERS
+//api/login
+func LoginHandler(w http.ResponseWriter, r *http.Request) {
+	x := db.CheckUser(r)
+	fmt.Fprintf(w, x)
+}
+
 //FUNDS
 //api/funds
 func FundsHandler(w http.ResponseWriter, r *http.Request) {
@@ -33,11 +40,11 @@ func CFTotalsMonthHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, x)
 }
 
-//api/funds/{id}
-//func FundHandler
-//db.FundsSummaryHandler
-//api/fundssummary/{id}
-//db.FundSummaryHandler
+//api/cf/totals/funds
+func CFTotalsFundsHandler(w http.ResponseWriter, r *http.Request) {
+	x := db.GetCFTotalsFunds(r)
+	fmt.Fprintf(w, x)
+}
 
 //INVESTMENTS
 //api/investments
@@ -48,20 +55,35 @@ func InvestmentsHandler(w http.ResponseWriter, r *http.Request) {
 
 //api/investments/{id}
 func InvestmentHandler(w http.ResponseWriter, r *http.Request) {
-	x := db.GetInvestment(r)
+	x := "" + `"` + "details" + `"` + ":[" + db.GetInvestment(r) + "]"
+	y := "" + `"` + "cashflows" + `"` + ":" + db.GetInvestmentInvIDCF(r) + ""
+	z := "[{" + x + "," + y + "}]"
+	fmt.Fprintf(w, string(z))
+}
+
+func CashflowInvidHandler(w http.ResponseWriter, r *http.Request) {
+	x := db.GetInvestmentInvIDCF(r)
 	fmt.Fprintf(w, x)
 }
 
-//api/investmentsdetail              db.InvestmentsDetailHandler             GET         Might be unecessary
+func CashflowInvidDistrosHandler(w http.ResponseWriter, r *http.Request) {
+	x := db.GetInvestmentsInvIDCFDistro(r)
+	fmt.Fprintf(w, x)
+}
 
+//api/cf/invid/distros/{id}          db.CashflowInvidDistrosHandler          GET
+//api/cf/invid/feess/{id}            db.CashflowInvidFeesHandler             GET
+//api/cf/invid/capital/{id}          db.CashflowInvidCapitalHandler          GET
+//api/funds/{id}
+//func FundHandler
+//db.FundsSummaryHandler
+//api/fundssummary/{id}
+//db.FundSummaryHandler
+//api/investmentsdetail              db.InvestmentsDetailHandler             GET         Might be unecessary
 //api/investors                      db.GetInvestments                       GET         Retrieves investor information
 //api/investors/invid/{id}           db.GetInvestmentAll                     GET         Not used
-
-//api/cf/invid                       db.CashflowInvidsHandler
+//api/cf/invid						CashflowInvidsHandler
 //api/cf/invid/distros               db.CashflowInvidsDistrosHandler         GET
 //api/cf/invid/fees                  db.CashflowInvidsFeesHandler            GET
 //api/cf/invid/capital               db.CashflowInvidsCapitalHandler         GET
 //api/cf/invid/{id}                  db.CashflowInvidHandler                 GET         Retrieves all cashflows related to investment ID
-//api/cf/invid/distros/{id}          db.CashflowInvidDistrosHandler          GET
-//api/cf/invid/feess/{id}            db.CashflowInvidFeesHandler             GET
-//api/cf/invid/capital/{id}          db.CashflowInvidCapitalHandler          GET

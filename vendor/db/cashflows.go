@@ -3,7 +3,6 @@ package db
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -22,7 +21,7 @@ type InvestmentsCF struct {
 	TimeStamp sql.NullString `json:"Time_Stamp"`
 }
 
-func GetInvestmentInvIDCF(w http.ResponseWriter, r *http.Request) {
+func GetInvestmentInvIDCF(r *http.Request) string {
 	vars := mux.Vars(r)
 	queryResult := []InvestmentsCF{}
 	sqlStatement := `SELECT "tblIDB_Investments_CF"."ID", "tblIDB_Investments_CF"."InvID", "tblIDB_Investments_CF"."CID", "tblIDB_Investments_CF"."Scenario", "tblIDB_Investments_CF"."CFID",` +
@@ -47,10 +46,10 @@ func GetInvestmentInvIDCF(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Fprintf(w, string(result))
+	return string(result)
 }
 
-func GetInvestmentsInvIDCFDistro(w http.ResponseWriter, r *http.Request) {
+func GetInvestmentsInvIDCFDistro(r *http.Request) string {
 	queryResult := []InvestmentsCF{}
 	sqlStatement :=
 		`SELECT "tblIDB_Investments_CF"."ID", "tblIDB_Investments_CF"."InvID","tblIDB_Investments_CF"."CID", "tblIDB_Investments_CF"."Scenario", "tblIDB_Investments_CF"."CFID"` +
@@ -74,7 +73,7 @@ func GetInvestmentsInvIDCFDistro(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Fprintf(w, string(result))
+	return string(result)
 }
 
 type CFTotalsFund struct {
@@ -130,7 +129,7 @@ func GetCFTotalsMonthly(r *http.Request) string {
 	sqlStatement :=
 		`SELECT "Scenario", a."CFID","Code_Name", "CF_Date",SUM("CF_Amount") AS CF_Amount ` +
 			`FROM "tblIDB_Investments_CF" AS "a"` +
-			`INNER JOIN "tblIDB_Investments_CF_IDs" AS B ON a."CFID" = b."CFID"` +
+			`INNER JOIN "tblIDB_Investments_CF_IDs" AS "b" ON a."CFID" = b."CFID"` +
 			`WHERE "Scenario"=` + "'Actual'" +
 			`GROUP BY "CF_Date", a."CFID", "Scenario", "Code_Name"`
 	rows, err := Db.Query(sqlStatement)
@@ -141,6 +140,44 @@ func GetCFTotalsMonthly(r *http.Request) string {
 	for rows.Next() {
 		var r CFTotalsMonthly
 		err := rows.Scan(&r.Scenario, &r.CFID, &r.CodeName, &r.CFDate, &r.CFAmount)
+		if err != nil {
+			log.Fatal(err)
+		}
+		queryResult = append(queryResult, r)
+	}
+	result, err := json.Marshal(queryResult)
+	if err != nil {
+		panic(err)
+	}
+	return string(result)
+}
+
+type CFTotalsFunds struct {
+	Scenario string  `json:"Scenario"`
+	CFID     string  `json:"CFID"`
+	CodeName string  `json:"Code_Name"`
+	CFAmount float64 `json:"CF_Amount"`
+	FundID   string  `json:"Fund_ID"`
+}
+
+func GetCFTotalsFunds(r *http.Request) string {
+	queryResult := []CFTotalsFunds{}
+	sqlStatement :=
+		`SELECT "Scenario", a."CFID","Code_Name",SUM("CF_Amount") AS CF_Amount, "Fund_ID" ` +
+			`FROM "tblIDB_Investments_CF" AS "a"` +
+			`INNER JOIN "tblIDB_Investments_CF_IDs" AS "b" ON a."CFID" = b."CFID" ` +
+			`INNER JOIN "tblIDB_Investments" as C ON a."CID" = c."CID"` +
+			`INNER JOIN "tblIDB_Funds" as D ON c."Feeder" = d."Feeder" ` +
+			`WHERE "Scenario"=` + "'Actual'" +
+			`GROUP BY a."CFID", "Scenario", "Code_Name", "Fund_ID"`
+	rows, err := Db.Query(sqlStatement)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var r CFTotalsFunds
+		err := rows.Scan(&r.Scenario, &r.CFID, &r.CodeName, &r.CFAmount, &r.FundID)
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -9,12 +9,10 @@ import numeral from 'numeral'
 
 
 function InvestorDetail (props) {
-    console.log(props)
 //Props State
     const propsHolder = useSelector( props => props)
     const propsDetails = useSelector(props => props.investorsInvID.map(res =>res.details))
     const propsCash = useSelector(props =>props.investorsInvID.map(res => res.cashflows))
-
 //Other State
     const [tableData, tableDataSet] = useState([])
     const [barChartData,barChartDataSet] = useState([])
@@ -49,11 +47,11 @@ function InvestorDetail (props) {
             'Tax Holdback':0, 'GP Promote':0, 'Management Fee':0, 'Servicing Fee':0, 'Commission':0, 
         }
         propsCash.forEach(array => {
-            array.forEach((row, index)=>{
-                try{
-                    tempObject[row.Code_Name] += row.CF_Amount
-                }catch(err){}
-            })
+                array.forEach((row, index)=>{
+                    try{
+                        tempObject[row.Code_Name] += row.CF_Amount
+                    }catch(err){}
+                })
         })
         return tempObject
     }

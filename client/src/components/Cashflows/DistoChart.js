@@ -52,7 +52,7 @@ function DistroChart(props) {
         <div className='autoMargin'>
             <h3>Distribution History</h3>
             <AreaChart width={1050} height={450} data={createNewCashflowObject()}
-            margin={{ top: 10, right: 50, left: 0, bottom: 0 }}>
+            margin={{ top: 10, right: 50, left: 50, bottom: 0 }}>
             <defs>
                 <linearGradient id="colorSD" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="100%" stopColor="#0088FE" stopOpacity={0.8}/>
