@@ -1,11 +1,25 @@
 {
 	"comment": "",
+	"heroku": {
+		"goVersion": "go1.12.8",
+		"install": [
+			"./..."
+		]
+	},
 	"ignore": "test",
 	"package": [
+		{
+			"checksumSHA1": "oCH3J96RWvO8W4xjix47PModpio=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": "4def268fd1a49955bfb3dda92fe3db4f924f2285",
+			"revisionTime": "2019-07-01T08:59:26Z"
+		},
+		{
+			"checksumSHA1": "q+XI9g44wd9mYvf3S5Wo8YZjAus=",
+			"path": "golang.org/x/crypto/blowfish",
+			"revision": "4def268fd1a49955bfb3dda92fe3db4f924f2285",
+			"revisionTime": "2019-07-01T08:59:26Z"
+		}
 	],
-	"rootPath": "ACA-Dashboard",
-	"heroku": {
-        "install" : [ "./..." ],
-        "goVersion": "go1.12.8"
-         }
+	"rootPath": "ACA-Dashboard"
 }
