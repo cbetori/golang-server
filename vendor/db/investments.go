@@ -27,7 +27,7 @@ type InvestmentsDetial struct {
 	DateEliminate sql.NullString `json:"Date_Eliminate"`
 	GrossCapital  float32        `json:"Gross_Capital"`
 	ActualCapital float32        `json:"Actual_Capital"`
-	NetCaptial    float32        `json:"Net_Captial"`
+	NetCapital    float32        `json:"Net_Captial"`
 	PmtType       sql.NullString `json:"Pmt_Type"`
 	Comments      sql.NullString `json:"Comments"`
 	SideLetter    sql.NullString `json:"Side_Letter"`
@@ -45,7 +45,7 @@ func GetInvestmentsTbl(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 	for rows.Next() {
 		var r InvestmentsDetial
-		err := rows.Scan(&r.InvID, &r.VID, &r.CID, &r.StructureID, &r.Feeder, &r.Blocker, &r.InvType, &r.LPARefDate, &r.SignDate, &r.FundedDate, &r.DateInv, &r.DateEliminate, &r.GrossCapital, &r.ActualCapital, &r.NetCaptial, &r.PmtType, &r.Comments, &r.SideLetter, &r.VirtusUser, &r.EditDate)
+		err := rows.Scan(&r.InvID, &r.VID, &r.CID, &r.StructureID, &r.Feeder, &r.Blocker, &r.InvType, &r.LPARefDate, &r.SignDate, &r.FundedDate, &r.DateInv, &r.DateEliminate, &r.GrossCapital, &r.ActualCapital, &r.NetCapital, &r.PmtType, &r.Comments, &r.SideLetter, &r.VirtusUser, &r.EditDate)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -69,7 +69,7 @@ type Investments struct {
 	DateEliminate null.String `json:"Date_Eliminate"`
 	AccountName   string      `json:"Account_Name"`
 	GrossCapital  float32     `json:"Gross_Capital"`
-	NetCaptial    float32     `json:"Net_Captial"`
+	NetCapital    float32     `json:"Net_Captial"`
 }
 
 func GetInvestments(r *http.Request) string {
@@ -88,7 +88,7 @@ func GetInvestments(r *http.Request) string {
 	defer rows.Close()
 	for rows.Next() {
 		var r Investments
-		err := rows.Scan(&r.InvID, &r.VID, &r.CID, &r.SID, &r.Feeder, &r.InvType, &r.DateInv, &r.DateEliminate, &r.AccountName, &r.GrossCapital, &r.NetCaptial)
+		err := rows.Scan(&r.InvID, &r.VID, &r.CID, &r.SID, &r.Feeder, &r.InvType, &r.DateInv, &r.DateEliminate, &r.AccountName, &r.GrossCapital, &r.NetCapital)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -118,7 +118,7 @@ func GetInvestment(r *http.Request) string {
 		`INNER JOIN "tblIDB_Investors"` +
 		`ON  "tblIDB_Investments"."VID" = "tblIDB_Investors"."VID"` +
 		`WHERE "InvID" =` + vars["id"]
-	err := Db.QueryRow(sqlStatement).Scan(&i.InvID, &i.VID, &i.CID, &i.SID, &i.Feeder, &i.InvType, &i.DateInv, &i.DateEliminate, &i.AccountName, &i.GrossCapital, &i.NetCaptial)
+	err := Db.QueryRow(sqlStatement).Scan(&i.InvID, &i.VID, &i.CID, &i.SID, &i.Feeder, &i.InvType, &i.DateInv, &i.DateEliminate, &i.AccountName, &i.GrossCapital, &i.NetCapital)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -129,10 +129,34 @@ func GetInvestment(r *http.Request) string {
 	return string(result)
 }
 
-// func GetInvestment(w http.ResponseWriter, r *http.Request) {
-// 	x := other(r)
-// 	y := other(r)
+func UpdateInvestmentsInvIDDetail(r *http.Request) {
+	fmt.Println("Updated Investor Detail")
+	var d Investments
+	er := json.NewDecoder(r.Body).Decode(&d)
+	fmt.Println(d)
+	if er != nil {
+		panic(er)
+	}
+	sqlStatement :=
+		`UPDATE "tblIDB_Investments" 
+		SET "InvID" = $1, "CID"= $2, "VID"= $3, "Feeder"= $4, 
+		"Inv_Type"= $5, "Gross_Capital"= $6,"Net_Capital"= $7,"Date_Inv"= $8,"Date_Eliminate"= $9
+		WHERE "InvID" = $1;`
+	_, err := Db.Exec(sqlStatement, d.InvID, d.CID, d.VID, d.Feeder, d.InvType, d.GrossCapital, d.NetCapital, d.DateInv, d.DateEliminate)
+	if err != nil {
+		panic(err)
+	}
 
-// 	t := "{cash:" + x + ",money:" + y + "}"
-// 	fmt.Fprintf(w, t)
-// }
+	sqlStatement2 :=
+		`UPDATE "tblIDB_Investors" 
+	SET "VID" = $1, "Account_Name"= $2, "SID"= $3 
+	WHERE "VID" = $1;`
+	_, error := Db.Exec(sqlStatement2, d.VID, d.AccountName, d.SID)
+	if error != nil {
+		panic(error)
+	}
+}
+
+// Account_Name: "Alan Knox"
+// SID: "661"
+// VID: 2751

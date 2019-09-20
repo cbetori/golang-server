@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -190,76 +191,20 @@ func GetCFTotalsFunds(r *http.Request) string {
 	return string(result)
 }
 
-// type Investments struct {
-// 	InvID         int            `json:"InvID"`
-// 	VID           int            `json:"VID"`
-// 	CID           int            `json:"CID"`
-// 	SID           string         `json:SID"`
-// 	Feeder        string         `json:"Feeder"`
-// 	InvType       string         `json:"Inv_Type"`
-// 	DateInv       sql.NullString `json:"Date_Inv"`
-// 	DateEliminate sql.NullString `json:"Date_Eliminate"`
-// 	AccountName   string         `json:"Account_Name"`
-// 	GrossCapital  float32        `json:"Gross_Capital"`
-// 	NetCaptial    float32        `json:"Net_Captial"`
-// }
-
-// func GetInvestments(w http.ResponseWriter, r *http.Request) {
-// 	queryResult := []Investments{}
-// 	sqlStatement := `SELECT "tblIDB_Investments"."InvID", "tblIDB_Investments"."VID", "tblIDB_Investments"."CID", "tblIDB_Investors"."SID", ` +
-// 		`"tblIDB_Investments"."Feeder", "tblIDB_Investments"."Inv_Type" ,  "tblIDB_Investments"."Date_Inv",` +
-// 		`"tblIDB_Investments"."Date_Eliminate", "tblIDB_Investors"."Account_Name", ` +
-// 		`"tblIDB_Investments"."Gross_Capital", "tblIDB_Investments"."Net_Capital"` +
-// 		`FROM "tblIDB_Investments" ` +
-// 		`INNER JOIN "tblIDB_Investors"` +
-// 		`ON  "tblIDB_Investments"."VID" = "tblIDB_Investors"."VID"`
-// 	rows, err := Db.Query(sqlStatement)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	defer rows.Close()
-// 	for rows.Next() {
-// 		var r Investments
-// 		err := rows.Scan(&r.InvID, &r.VID, &r.CID, &r.SID, &r.Feeder, &r.InvType, &r.DateInv, &r.DateEliminate, &r.AccountName, &r.GrossCapital, &r.NetCaptial)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		queryResult = append(queryResult, r)
-// 	}
-// 	result, err := json.Marshal(queryResult)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	fmt.Fprintf(w, string(result))
-// }
-
-// func GetInvestment(w http.ResponseWriter, r *http.Request) {
-// 	vars := mux.Vars(r)
-// 	queryResult := []Investments{}
-// 	sqlStatement := `SELECT "tblIDB_Investments"."InvID", "tblIDB_Investments"."VID", "tblIDB_Investments"."CID", "tblIDB_Investors"."SID", ` +
-// 		`"tblIDB_Investments"."Feeder", "tblIDB_Investments"."Inv_Type" ,  "tblIDB_Investments"."Date_Inv",` +
-// 		`"tblIDB_Investments"."Date_Eliminate", "tblIDB_Investors"."Account_Name", ` +
-// 		`"tblIDB_Investments"."Gross_Capital", "tblIDB_Investments"."Net_Capital"` +
-// 		`FROM "tblIDB_Investments" ` +
-// 		`INNER JOIN "tblIDB_Investors"` +
-// 		`ON  "tblIDB_Investments"."VID" = "tblIDB_Investors"."VID"` +
-// 		`WHERE "InvID" =` + vars["id"]
-// 	rows, err := Db.Query(sqlStatement)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	defer rows.Close()
-// 	for rows.Next() {
-// 		var r Investments
-// 		err := rows.Scan(&r.InvID, &r.VID, &r.CID, &r.SID, &r.Feeder, &r.InvType, &r.DateInv, &r.DateEliminate, &r.AccountName, &r.GrossCapital, &r.NetCaptial)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		queryResult = append(queryResult, r)
-// 	}
-// 	result, err := json.Marshal(queryResult)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	fmt.Fprintf(w, string(result))
-// }
+func UpdateInvestmentsInvIDCF(r *http.Request) {
+	fmt.Println("Update Fired")
+	var d InvestmentsCF
+	er := json.NewDecoder(r.Body).Decode(&d)
+	fmt.Println(d)
+	if er != nil {
+		panic(er)
+	}
+	sqlStatement :=
+		`UPDATE "tblIDB_Investments_CF" 
+		SET "InvID" = $2, "CID"= $3, "CF_Date"= $4, "CF_Amount"= $5
+		WHERE "ID" = $1;`
+	_, err := Db.Exec(sqlStatement, d.ID, d.InvID, d.CID, d.CFDate, d.CFAmount)
+	if err != nil {
+		panic(err)
+	}
+}

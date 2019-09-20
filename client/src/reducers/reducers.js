@@ -1,4 +1,5 @@
 import {combineReducers} from "redux";
+import update from 'react-addons-update';
 
 function loginState(state = {}, action) {
   if (action.type === "LOGIN_LOADED") {
@@ -52,6 +53,39 @@ function investors(state =[], action){
 function investorsInvID(state =[], action){
   if (action.type === 'INVESTORS_INVID_LOADED'){
     return action.value
+  }else if (action.type === 'INVESTORS_INVID_LOADED_UPDATE'){
+    let cash = state[0].cashflows
+    //just looping through cash
+    for (let element in cash){
+      if(cash[element].ID === action.value.ID){
+        //React feature that makes updating nested state objects easier
+        return update(state, {
+          0: {cashflows: {[element]: {$set: action.value}}}
+        })
+      }
+    }
+    }else if (action.type === 'INVESTORS_INVID_LOADED_UPDATE_DETAIL'){
+      let details = state[0].details
+      console.log(details)
+      for (let element in details){
+        if(details[element].ID === action.value.ID){
+          console.log(update(state, {
+            0: {details: {[element]: {$set: action.value}}}
+          }))
+          return update(state, {
+            0: {details: {[element]: {$set: action.value}}}
+          })
+        }
+      }
+      console.log(state[0].details)
+    }
+  return state
+}
+
+function investorTest(state =[], action){
+  if (action.type === 'INVESTORS_INVID_LOADED_TEST'){
+    console.log(action.value)
+    return action.value
   }
   return state
 }
@@ -63,8 +97,7 @@ function distributionsFund(state =[], action){
   return state
 }
 
-
 const rootReducer = combineReducers({
-  loginState, funds, fundsSize, investments, distributions, investors, investorsInvID, cfTotals, distributionsFund
+  loginState, funds, fundsSize, investments, distributions, investors, investorsInvID, cfTotals, distributionsFund, investorTest
   });
   export default rootReducer;

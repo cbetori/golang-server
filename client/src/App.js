@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter, Switch, Route, } from "react-router-dom";
 import "antd/dist/antd.css";
 import { Layout } from "antd";
@@ -11,54 +11,53 @@ import { FundsCardResult } from "./containers/FundsContainer";
 import { InvestorDetailResult } from './containers/InvestorsInvIDContainer'
 const { Content} = Layout;
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loginChange: this.loggedout()
+const App =(props)=> {
+  //Keep track of loginstatus and url history
+  const [loginStatus, loginStatusSet] = useState()
+  const [browserHistory, browserHistorySet] = useState(props.history.location)
+  //prevent api call before login
+  const getComponenets =()=>{
+    props.loadFunds();
+    props.loadFundsSize();
+    props.loadInvestors();
+    props.loadInvestments();
+    props.loadDistributions();
+    props.loadInvestorsInvID();
+    props.loadcfTotals();
+    props.loadDistributionsByFund();
+    props.loadInvestorsInvIDTest()
+    // props.updateInvestorCashFlow();
+  }
+
+  //Updates browser history on change then reloads investory query
+  if(props.history.location.pathname.slice(0,17) === "/investors/invid/" || props.history.location.pathname.slice(0,15) === "/investors/vid/"){
+    
+    if(browserHistory != props.history.location){
+      browserHistorySet(props.history.location)
     }
   }
+  useEffect(()=>{
+    props.loadInvestorsInvIDTest()
+    props.loadInvestorsInvID();
+  },[browserHistory])
 
-  getComponenets(){
-    this.props.loadFunds();
-    this.props.loadFundsSize();
-    this.props.loadInvestors();
-    this.props.loadInvestments();
-    this.props.loadDistributions();
-    this.props.loadInvestorsInvID();
-    this.props.loadcfTotals();
-    this.props.loadDistributionsByFund();
-    // this.props.updateInvestorCashFlow();
+  //Only runs one page refresh and locks out user
+  useEffect(()=>{
+    //Switch these to turn lock back on
+    // loginStatusSet(loggedin)
+    loginStatusSet(loggedout)
+  },[])
+
+  //called if login api provides response
+  const handleLogin = ()=>{
+    getComponenets()
+      loginStatusSet(loggedin())
   }
-
-  handleLogin = ()=>{
-    this.getComponenets()
-    this.setState({
-      loginChange:this.loggedin()
-    })
-  }
-
-  componentDidMount() {
-    this.unlisten = this.props.history.listen((location, action) => {
-      this.props.loadInvestorsInvID();
-    });
-  }
-
-  componentWillUnmount() {
-    this.unlisten();
-  }
-
-  loggedout =()=>{
-    return(
-      <LoginContainer log={this.props.loadLogin} handle={this.handleLogin.bind(this)} loginChange={this.loginChange}/>
-      )
-  }
-
-  loggedin=()=>{
-    console.log(true)
+  //result if logged in
+  const loggedin=()=>{
     return(
     <Layout style={{ minHeight: "100vh" }}>
-      <NavTop />
+      <NavTop location={props.history}/>
       <div id='container' style={{display: 'flex'}}>
       <NavSide />
       <Switch>
@@ -67,6 +66,7 @@ class App extends Component {
           <Route path="/funds" component={FundsCardResult} />
           <Route path="/investors" exact component={InvestorsTableResults} />
           <Route path="/investors/invid/:id" component={InvestorDetailResult} />
+          <Route path="/investors/vid/:id" component={InvestorDetailResult} />
           <Route path="/cashflows" component={Main} />
         </Content>
       </Switch>
@@ -75,14 +75,21 @@ class App extends Component {
     )
   }
   
-  render() {
+  //result if not logged in
+  const loggedout =()=>{
+    return(
+      <LoginContainer 
+      loginValue={props.loadLogin} 
+      handleLogin={handleLogin} 
+      />
+    )
+  }
     return (
       <div>
-        {this.state.loginChange}
+        {loginStatus}
       </div>    
 
     );
-  }
 }
 
 export default withRouter(App);

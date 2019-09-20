@@ -1,7 +1,9 @@
 import React from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Input } from 'antd';
+import {SearchResult} from '../../containers/SearchCont'
 const { Header} = Layout;
 const { SubMenu } = Menu;
+
 
 export default class NavTop extends React.Component {
   state = {
@@ -14,6 +16,7 @@ export default class NavTop extends React.Component {
     });
   };
   render() {
+    console.log(this.props)
     return (
       <Header style={{background: '#fff', padding: 0}}>
         <Menu style={{maxHeight: 65, display: 'flex', lineHeight: '64px'}} onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
@@ -21,12 +24,9 @@ export default class NavTop extends React.Component {
             <Icon type="code" style={{fontSize: 22}} />
             Dashboard
           </Menu.Item>
-          <Menu.Item key="app" >
-            <Icon type="appstore" />
-            Navigation One
-          </Menu.Item>
+          <SearchResult location={this.props.location} />
           <SubMenu
-            style={{marginLeft:'72%' , right: 0}}
+            style={{marginLeft: 'auto'}}
             title={
               <span className="submenu-title-wrapper">
                 <Icon type="user" />

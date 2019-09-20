@@ -7,6 +7,20 @@ import (
 )
 
 //USERS
+
+func wrapString(x string) string {
+	x = `"` + x + `"`
+	return x
+}
+
+func Update2(w http.ResponseWriter, r *http.Request) {
+	x := db.GetInvestor2(r)
+	y := db.GetInvestment2(r)
+	z := db.GetCashFlows2(y)
+	res := "{" + wrapString("investor") + ":" + x + "," + wrapString("investment") + ":" + y + "," + wrapString("cashflow") + ":" + z + "}"
+	fmt.Fprintf(w, res)
+}
+
 //api/login
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	x := db.CheckUser(r)
@@ -61,14 +75,24 @@ func InvestmentHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(z))
 }
 
+//api/cf/invid/{id}
 func CashflowInvidHandler(w http.ResponseWriter, r *http.Request) {
 	x := db.GetInvestmentInvIDCF(r)
 	fmt.Fprintf(w, x)
 }
 
+//api/cf/distro/invid
 func CashflowInvidDistrosHandler(w http.ResponseWriter, r *http.Request) {
 	x := db.GetInvestmentsInvIDCFDistro(r)
 	fmt.Fprintf(w, x)
+}
+
+func CashflowInvidUpdater(w http.ResponseWriter, r *http.Request) {
+	db.UpdateInvestmentsInvIDCF(r)
+}
+
+func DetailInvidUpdater(w http.ResponseWriter, r *http.Request) {
+	db.UpdateInvestmentsInvIDDetail(r)
 }
 
 //api/cf/invid/distros/{id}          db.CashflowInvidDistrosHandler          GET

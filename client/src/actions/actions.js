@@ -159,23 +159,70 @@ function investorsLoadedInvID(res) {
     value: res
   };
 }
+ 
+  
+export function loadInvestorsInvIDTest() {
+  let url = window.location.href
+  if (url.split("/").slice(-2)[0] === "vid"){
+    var urlsplit = url.split("/").slice(-1)[0];
+    return function (dispatch) {
+      fetch("/api/test/vid/"+urlsplit)
+        .then( (response) => {
+          return response.json();
+        }).then((res) => {
+          dispatch(investorsLoadedInvIDTest(res));
+        });
+      }; 
+    }
+    return investorsLoadedInvIDTest([]);
+}
 
-export function updateInvestorCashFlow(oldValue, newValue, row) {
-  console.log(oldValue)
-  console.log(newValue)
+function investorsLoadedInvIDTest(res) {
+  console.log(res)
+  return {
+    type: "INVESTORS_INVID_LOADED_TEST",
+    value: res
+  };
+}
+
+export function updateInvestorCashFlow(row) {
   let url = window.location.href
   var urlsplit = url.split("/").slice(-1)[0];
-  // return function (dispatch) {
-    fetch("/api/investments/invid/"+urlsplit+"/cf", {
+  return function (dispatch) {
+    fetch("/api/investments/invid/"+urlsplit+"/update", {
       method: "PUT",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({row})
+      body: JSON.stringify(row)
     })
-    .then((res) => res.json()
-    .then(response => loadInvestorsInvID(response))
-    .catch(error => console.error('Error:', error)))
+    .then(response => dispatch(updateInvestorCashFlowState(row)))
+    .catch(error => console.error('Error:', error))
+  }
 }
-//      .then((res) => res.json())
-//     .then(response => console.log('Success:', JSON.stringify(response)))
-//     .catch(error => console.error('Error:', error));
-// {username: "Broly", password: "Peterson"}
+
+function updateInvestorCashFlowState(res){
+  return{
+    type: "INVESTORS_INVID_LOADED_UPDATE", 
+    value: res
+  }
+}
+
+export function updateInvestorDetail(row) {
+  let url = window.location.href
+  var urlsplit = url.split("/").slice(-1)[0];
+  return function (dispatch) {
+    fetch("/api/investments/invid/"+urlsplit+"/updatedetail", {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(row)
+    })
+    .then(response => dispatch(updateInvestorCashFlowDetailState(row)))
+    .catch(error => console.error('Error:', error))
+  }
+}
+
+function updateInvestorCashFlowDetailState(res){
+  return{
+    type: "INVESTORS_INVID_LOADED_UPDATE_DETAIL", 
+    value: res
+  }
+}
