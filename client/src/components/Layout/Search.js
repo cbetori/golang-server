@@ -11,9 +11,33 @@ function Search (props){
     const [data, dataSet] = useState([])
     const [value, valueSet] = useState()
     const [fetching, fetchingSet] = useState(false)
-    let immediatValue = ''
+    //Used to compensate for state changes delay
+    let immediateValue = ''
+
+    //Update mapper and getSearchable items to add/remove searchable 
     const mapper = {
-      VID: 'vid'
+      Fund_ID: 'fund',
+      Account_Name: 'investor',
+      InvID: 'invid',
+      CID: 'cid',
+      SID: 'sid',
+      VID: 'vid',
+    }
+
+    let getSearchableItems =(res)=>{
+      let body = []
+      let items = {
+        funds: fetchProps(res, props.funds, 'Fund_ID'),
+        names: fetchProps(res, props.investments, 'Account_Name'),
+        sid: fetchProps(res, props.investments, 'SID'),
+        invid: fetchProps(res, props.investments, 'InvID'),
+        cid: fetchProps(res, props.investments, 'CID'),
+        vid: fetchProps(res, props.investments, 'VID'),
+      }
+      for (let [key, value] of Object.entries(items)) {
+        body.push(value)
+      }
+      return body  
     }
 
     let fetchProps = (value, data, key) =>{
@@ -46,70 +70,67 @@ function Search (props){
         return result
     }
 
-   let fetchResult = res => {
+    let fetchResult = search => {
+      //Clearing out value and search results on each new search, initiate loading circle
       dataSet([])
       valueSet()
       fetchingSet(true)
-      let body = []
-      let funds = fetchProps(res, props.funds, 'Fund_ID')
-      let names = fetchProps(res, props.investments, 'Account_Name')
-      let sid = fetchProps(res, props.investments, 'SID')
-      let invid = fetchProps(res, props.investments, 'InvID')
-      let cid = fetchProps(res, props.investments, 'CID')
-      let vid = fetchProps(res, props.investments, 'VID')
-      if(res === ''){
+      //Getting props and filter based on search string
+      let body = getSearchableItems(search)
+      //If search string is empty clear filterd values and stop loading icon
+      if(search === ''){
         dataSet([])
         fetchingSet([false])
       }else{
-        body = handleSearchArray([vid])
-        // funds, names, sid, invid, cid, 
-      const data = body.map((res) =>({
-            text: res,
-            value: res,
-        }));
-        dataSet(data)
-        fetchingSet([false])
+        //If search string has value map 
+        body = handleSearchArray(body)
+        const data = body.map((res) =>({
+              text: res,
+              value: res,
+          }));
+          dataSet(data)
+          fetchingSet([false])
       }
     }
     
     let handleURL=()=>{
-      let clone
-      if(immediatValue != ''){
-        clone = immediatValue
-      }else{
-        clone = value
-      }
+      //if immediateValue is empty use state value else use the immediate value
+      let clone = immediateValue === '' ? value : immediateValue
       let key = clone.substr(0, clone.indexOf(':'))
       let detail = clone.split(':').pop().trim()
       key = mapper[key]
-      props.location.push({
-        pathname: '/investors/'+key+'/'+detail,
+      console.log(props.location)
+      props.location.replace({
+        pathname: '/' +key  +'/' + detail,
         search: ''
       })
     }
 
     let handleChange = (res) => {
-        immediatValue = res
+        immediateValue = res
         valueSet(res)
         dataSet([])
         fetchingSet(false)
     };
+
+    //Allows enter key to trigger search button
     let handlerSearchEnter=(event)=>{
-      if (event.keyCode === 13 && immediatValue != ''){
+      //13=enter key. If immediatevalue is blank dont fire.
+      if (event.keyCode === 13 && immediateValue != ''){
         handleURL()
       }
     }
 
+    //Fetch results but added a timing delay to prevent constant lookups
     let fetchAll = debounce(fetchResult, 100);
       return (
         <div style={{marginLeft: 'auto', marginRight: 'auto', alignSelf: 'center'}}>
           <Select
             showSearch
-            style={{width: '800px', minWidth:'100px', fontSize: '16pt'}}
+            style={{width: '400px', minWidth:'100px', fontSize: '16pt'}}
             mode="default"
             allowClear={true}
             value={value}
-            // onMouseEnter={handleClear}
             placeholder="Search"
             notFoundContent={fetching ? <Spin size="small" /> : null}
             filterOption={false}

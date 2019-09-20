@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 import InvestorDetail from "../components/Investors/InvestorDetail";
+import InvestorDetailInvid from '../components/Investors/InvestorDetailInvid'
 import {updateInvestorCashFlow, updateInvestorDetail} from '../actions/actions'
 
 function mapStateToProps(state) {
@@ -19,6 +20,7 @@ function mapDispatchToProps(dispatch){
       dispatch(updateInvestorDetail(result))
     }
   }
-}
+} 
 
-export const InvestorDetailResult = connect(mapStateToProps, mapDispatchToProps)(InvestorDetail)
+export const InvestorsInvIDContainer = connect(mapStateToProps, mapDispatchToProps)(InvestorDetailInvid)
+export const InvestorsVidContainer = connect(mapStateToProps, mapDispatchToProps)(InvestorDetail)

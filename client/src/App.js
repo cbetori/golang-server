@@ -8,7 +8,7 @@ import NavSide from "./components/Layout/NavSide";
 import { InvestorsTableResults } from "./containers/InvestorsContainer"
 import { LoginContainer } from "./containers/LoginContainer"
 import { FundsCardResult } from "./containers/FundsContainer";
-import { InvestorDetailResult } from './containers/InvestorsInvIDContainer'
+import { InvestorsInvIDContainer, InvestorsVidContainer } from './containers/InvestorsInvIDContainer'
 const { Content} = Layout;
 
 const App =(props)=> {
@@ -30,28 +30,27 @@ const App =(props)=> {
   }
 
   //Updates browser history on change then reloads investory query
-  if(props.history.location.pathname.slice(0,17) === "/investors/invid/" || props.history.location.pathname.slice(0,15) === "/investors/vid/"){
+  //if(props.history.location.pathname.slice(0,17) === "/invid/" || props.history.location.pathname.slice(0,15) === "/investors/vid/"){
     
     if(browserHistory != props.history.location){
       browserHistorySet(props.history.location)
     }
-  }
+  // }
   useEffect(()=>{
+    console.log(5)
     props.loadInvestorsInvIDTest()
     props.loadInvestorsInvID();
   },[browserHistory])
 
   //Only runs one page refresh and locks out user
   useEffect(()=>{
-    //Switch these to turn lock back on
-    // loginStatusSet(loggedin)
     loginStatusSet(loggedout)
   },[])
 
   //called if login api provides response
   const handleLogin = ()=>{
     getComponenets()
-      loginStatusSet(loggedin())
+    loginStatusSet(loggedin())
   }
   //result if logged in
   const loggedin=()=>{
@@ -63,10 +62,11 @@ const App =(props)=> {
       <Switch>
         <Content style={{marginLeft: 10}}>
           <Route path="/" exact component={Main} />
-          <Route path="/funds" component={FundsCardResult} />
+          <Route path="/fund/:id" component={FundsCardResult} />
           <Route path="/investors" exact component={InvestorsTableResults} />
-          <Route path="/investors/invid/:id" component={InvestorDetailResult} />
-          <Route path="/investors/vid/:id" component={InvestorDetailResult} />
+          <Route path="/investor/:name" exact component={InvestorsTableResults} />
+          <Route path="/invid/:id" component={InvestorsInvIDContainer} />
+          <Route path="/vid/:id" component={InvestorsVidContainer} />
           <Route path="/cashflows" component={Main} />
         </Content>
       </Switch>
