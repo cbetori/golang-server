@@ -70,11 +70,15 @@ function Search (props){
         dataSet(data)
         fetchingSet([false])
       }
-    };
+    }
     
     let handleURL=()=>{
-      console.log(immediatValue)
-      let clone = immediatValue
+      let clone
+      if(immediatValue != ''){
+        clone = immediatValue
+      }else{
+        clone = value
+      }
       let key = clone.substr(0, clone.indexOf(':'))
       let detail = clone.split(':').pop().trim()
       key = mapper[key]
@@ -91,7 +95,6 @@ function Search (props){
         fetchingSet(false)
     };
     let handlerSearchEnter=(event)=>{
-
       if (event.keyCode === 13 && immediatValue != ''){
         handleURL()
       }
