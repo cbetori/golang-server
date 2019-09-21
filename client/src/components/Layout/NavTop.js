@@ -26,7 +26,6 @@ export default class NavTop extends React.Component {
           </Menu.Item>
           <SearchResult location={this.props.location} />
           <SubMenu
-            style={{marginLeft: 'auto'}}
             title={
               <span className="submenu-title-wrapper">
                 <Icon type="user" />

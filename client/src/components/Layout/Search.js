@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
 const { Option } = Select;
 
 function Search (props){
-    console.log(props)
+  
     const [data, dataSet] = useState([])
     const [value, valueSet] = useState()
     const [fetching, fetchingSet] = useState(false)
@@ -127,7 +127,7 @@ function Search (props){
         <div style={{marginLeft: 'auto', marginRight: 'auto', alignSelf: 'center'}}>
           <Select
             showSearch
-            style={{width: '400px', minWidth:'100px', fontSize: '16pt'}}
+            style={{width: '400px', minWidth:'100px', fontSize: '16pt', marginLeft: 'auto', marginRight: 'auto'}}
             mode="default"
             allowClear={true}
             value={value}
