@@ -167,6 +167,8 @@ function InvestorDetail (props) {
             newModalDetailSet(clone)
             }
 
+        
+    if (props != undefined){
         return(
             <div style={{background: '#ECECEC'}}>
                 <h1 style={{margin:25, marginBottom:0, fontSize:50}}>{cardDataDetail.Account_Name}</h1>
@@ -182,7 +184,7 @@ function InvestorDetail (props) {
                         <p>End Date:        {moment(cardDataDetail.Date_Eliminate).format('MM/DD/YYYY')}</p>
                         <Button shape='circle' icon='edit' onClick={()=>showModalDetail()} style={{marginLeft:'90%', marginTop:'40px'}}/>
                     </Card>
-                  
+                    
                     <Card title='Cashflows' bordered={false} style={{ width: 300, margin:25 }}>
                         {cardDataCash}
                     </Card>
@@ -250,6 +252,12 @@ function InvestorDetail (props) {
                 <Table style={{marginRight: 75, background: '#f1f3f5'}} columns= {columns} dataSource={tableData} />
             </div>
         )
+        }else{
+            return(
+                <div></div>
+            )
+            
+        }
 }
 
 export default InvestorDetail

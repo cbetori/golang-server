@@ -59,11 +59,11 @@ class InvestorsTable extends Component{
       }
 
     render(){
-        let columns = [
+      let columns = [
+        {title: 'VID', dataIndex:'VID',  key: 'VID', ...this.getColumnSearchProps('VID'), render: text => <Link  to={"/vid/"+text}>{text}</Link>},
+        {title: 'SID', dataIndex:'SID', key: 'SID', ...this.getColumnSearchProps('SID'), render: text => <Link  to={"/sid/"+text}>{text}</Link>},
         {title: 'InvID', dataIndex:'InvID',  key: 'InvID', ...this.getColumnSearchProps('InvID'), render: text => <Link  to={"/invid/"+text}>{text}</Link>},
         {title: 'CID', dataIndex:'CID',  key: 'CID', ...this.getColumnSearchProps('CID'), render: text => <Link  to={"/cid/"+text}>{text}</Link>},
-        {title: 'VID', dataIndex:'VID',  key: 'VID', ...this.getColumnSearchProps('VID'), render: text => <Link  to={"/vid/"+text}>{text}</Link>},
-        {title: 'SID', dataIndex:'SID', key: 'SID', ...this.getColumnSearchProps('SID')},
         {title: 'Name', dataIndex:'Account_Name', key: 'Account_Name', ...this.getColumnSearchProps('Account_Name')},
         {title: 'Feeder', dataIndex:'Feeder', key: 'Feeder', ...this.getColumnSearchProps('Feeder')},
         {title: 'Inv_Type', dataIndex:'Inv_Type', key: 'Inv_Type', ...this.getColumnSearchProps('Inv_Type')},
@@ -71,11 +71,10 @@ class InvestorsTable extends Component{
         {title: 'Date_Eliminate', dataIndex:'Date_Eliminate', key: 'String', ...this.getColumnSearchProps('Date_Eliminate')},
         {title: 'Gross_Capital', dataIndex:'Gross_Capital', key: 'Gross_Capital', ...this.getColumnSearchProps('Gross_Capital')},
         {title: 'Net_Capital', dataIndex:'Net_Capital', key: 'Net_Capital', ...this.getColumnSearchProps('Net_Capital')}
-
-        ]
+      ]
         return(
             <div>
-                <Table columns= {columns} dataSource={this.props.investors} />
+                <Table pagination={{ pageSize: 20 }} columns= {columns} dataSource={this.props.investors} />
             </div>
         )
     }

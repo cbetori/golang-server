@@ -163,10 +163,11 @@ function investorsLoadedInvID(res) {
   
 export function loadInvestorsInvIDTest() {
   let url = window.location.href
-  if (url.split("/").slice(-2)[0] === "vid"){
+  let path = url.split("/").slice(-2)[0]
+  if (path === "vid" || path ==="sid"){
     var urlsplit = url.split("/").slice(-1)[0];
     return function (dispatch) {
-      fetch("/api/test/vid/"+urlsplit)
+      fetch("/api/test/"+path+"/"+urlsplit)
         .then( (response) => {
           return response.json();
         }).then((res) => {

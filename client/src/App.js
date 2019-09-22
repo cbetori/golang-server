@@ -37,7 +37,6 @@ const App =(props)=> {
     }
   // }
   useEffect(()=>{
-    console.log(5)
     props.loadInvestorsInvIDTest()
     props.loadInvestorsInvID();
   },[browserHistory])

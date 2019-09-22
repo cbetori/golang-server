@@ -6,6 +6,7 @@ import (
 	"log"
 	"models"
 	"net/http"
+	"strings"
 	"utilities"
 
 	"github.com/buger/jsonparser"
@@ -15,10 +16,16 @@ import (
 
 func GetInvestor2(r *http.Request) string {
 	vars := mux.Vars(r)
+	id := vars["id"]
+	path := strings.ToUpper(vars["path"])
+	if path == "SID" {
+		id = `'` + id + `'`
+	}
 	var i models.Investor2
-	sqlStatement := `SELECT * FROM "tblIDB_Investors" WHERE "VID"=` + vars["id"]
+	sqlStatement := `SELECT * FROM "tblIDB_Investors" WHERE "` + path + `"=` + id
 	err := Db.QueryRow(sqlStatement).Scan(&i.VID, &i.SID, &i.Account_Name)
 	if err != nil {
+		fmt.Println(sqlStatement)
 		log.Fatal(err)
 	}
 	result, err := json.Marshal(i)
@@ -34,7 +41,7 @@ func GetInvestment2(r *http.Request) string {
 	var sqlStatement string = `Select "InvID", "VID", "CID", "Structure_ID", "Feeder", "Blocker", "Inv_Type", 
 	TO_CHAR("Date_Inv", 'mm/dd/yyyy'), TO_CHAR("Date_Eliminate", 'mm/dd/yyyy'), "Gross_Capital", "Net_Capital", 
 	CAST("Gross_Capital" as money) as "Gross_Capital_String", CAST("Net_Capital" as money) as "Net_Capital_String" 
-	FROM "tblIDB_Investments" WHERE "VID"=` + vars["id"]
+	FROM "tblIDB_Investments" WHERE "` + strings.ToUpper(vars["path"]) + `"=` + vars["id"]
 	rows, err := Db.Query(sqlStatement)
 	if err != nil {
 		panic(err)
@@ -54,69 +61,6 @@ func GetInvestment2(r *http.Request) string {
 	}
 	return string(result)
 }
-
-// func GetInvestor2(r *http.Request) string {
-// 	vars := mux.Vars(r)
-// 	queryResult := []models.Investor2{}
-// 	var sqlStatement string
-// 	if vars["path"] == "vid" {
-// 		sqlStatement = `SELECT * FROM "tblIDB_Investors" WHERE "VID"=` + vars["id"]
-// 	} else {
-// 		sqlStatement = `SELECT * FROM "tblIDB_Investors" WHERE "SID"=` + vars["id"] + `::text`
-// 	}
-// 	rows, err := Db.Query(sqlStatement)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	defer rows.Close()
-// 	for rows.Next() {
-// 		var r models.Investor2
-// 		err := rows.Scan(&r.VID, &r.SID, &r.Account_Name)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		queryResult = append(queryResult, r)
-// 	}
-// 	result, err := json.Marshal(queryResult)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	return string(result)
-// }
-
-// func GetInvestment2(res string) string {
-// 	data := []byte(res)
-// 	var vid []int64
-// 	jsonparser.ArrayEach(data, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-// 		temp, _ := jsonparser.GetInt(value, "VID")
-// 		vid = append(vid, temp)
-// 	})
-// 	temp := utilities.ArrayToString(vid, ",")
-// 	fmt.Println(temp)
-// 	queryResult := []models.Investments2{}
-// 	var sqlStatement string = `Select "InvID", "VID", "CID", "Structure_ID", "Feeder", "Blocker", "Inv_Type",
-// 	TO_CHAR("Date_Inv", 'mm/dd/yyyy'), TO_CHAR("Date_Eliminate", 'mm/dd/yyyy'), "Gross_Capital", "Net_Capital",
-// 	CAST("Gross_Capital" as money) as "Gross_Capital_String", CAST("Net_Capital" as money) as "Net_Capital_String"
-// 	FROM "tblIDB_Investments" WHERE "VID" IN(` + temp + `)`
-// 	rows, err := Db.Query(sqlStatement)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	defer rows.Close()
-// 	for rows.Next() {
-// 		var r models.Investments2
-// 		err := rows.Scan(&r.InvID, &r.VID, &r.CID, &r.Structure_ID, &r.Feeder, &r.Blocker, &r.Inv_Type, &r.Date_Inv, &r.Date_Eliminate, &r.Gross_Capital, &r.Net_Capital, &r.Gross_Capital_String, &r.Net_Capital_String)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		queryResult = append(queryResult, r)
-// 	}
-// 	result, err := json.Marshal(queryResult)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	return string(result)
-// }
 
 func GetCashFlows2(res string) string {
 	data := []byte(res)
