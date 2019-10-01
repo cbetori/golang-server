@@ -4,6 +4,7 @@ import (
 	"db"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 //USERS
@@ -13,11 +14,19 @@ func wrapString(x string) string {
 	return x
 }
 
-func Update2(w http.ResponseWriter, r *http.Request) {
-	x := db.GetInvestor2(r)
-	y := db.GetInvestment2(r)
-	z := db.GetCashFlows2(y)
-	res := "{" + wrapString("investor") + ":" + x + "," + wrapString("investment") + ":" + y + "," + wrapString("cashflow") + ":" + z + "}"
+func InvestorHandler(w http.ResponseWriter, r *http.Request) {
+	path := strings.Split(r.URL.Path, "/")
+	fmt.Println("Path Check ", path[2])
+	x := db.GetInvestor2(r, path[2])
+	var res string
+	if path[2] == "vid" {
+		y := db.GetInvestment2(r, path[2])
+		z := db.GetCashFlows2(y)
+		res = "{" + wrapString("investor") + ":" + x + "," + wrapString("investment") + ":" + y + "," + wrapString("cashflow") + ":" + z + "}"
+	} else {
+		res = "{" + wrapString("investor") + ":" + x + "}"
+	}
+
 	fmt.Fprintf(w, res)
 }
 

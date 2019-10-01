@@ -6,12 +6,11 @@ import moment from 'moment'
 import numeral from 'numeral'
 
 function InvestorDetail (props) {
-    console.log(props)
+   
 //Props State
     const propsHolder = useSelector( props => props)
     const propsDetails = useSelector(props => props.investorsInvID.map(res =>res.details))
     const propsCash = useSelector(props =>props.investorsInvID.map(res => res.cashflows))
-
 //Other State
     const [tableData, tableDataSet] = useState([])
     const [barChartData,barChartDataSet] = useState([])
@@ -66,17 +65,26 @@ function InvestorDetail (props) {
         {title: 'Date', dataIndex:'CF_Date',  key: 'CF_Date', width: '20%'},
     ]   
 
+    //Allows table to be sorted by date
+    function sortArrayofObjects(a, b){
+        let object1 = a["CF_Date"]
+        let object2 = b["CF_Date"]
+        
+        return object1>object2 ? 1 : -1
+    }
+
     function getTableData(){
         let tempArray = []
         const cashArray = JSON.parse(JSON.stringify(propsCash))
         cashArray.forEach(array => {
             array.forEach((row, index)=>{
-                row.CF_Date = moment(row.CF_Date).format('MM/DD/YYYY')
+                row.CF_Date = moment(row.CF_Date.substring(0,10)).format('MM/DD/YYYY')
                 row.CF_Amount = numeral(row.CF_Amount).format('0,0.00')
                 row.Edit= (<Button type="primary" key={index} onClick={()=>showModalCF(row)}>Edit</Button>)
                 tempArray.push(row)
             })
         })
+        tempArray.sort(sortArrayofObjects)
         tableDataSet(tempArray)
     }
 
@@ -126,7 +134,7 @@ function InvestorDetail (props) {
             setConfirmLoading(true)
             let result = cleanFormatting()
             setTimeout(() => {
-                props.updateInvestorCashFlow(result)
+                props.handlePost(result, 'udpateInvCF')
                 cfsetVisible(false)
                 setConfirmLoading(false)
             }, 500);
@@ -142,7 +150,7 @@ function InvestorDetail (props) {
         function handleOkDetail () {
             setConfirmLoading(true)
             setTimeout(() => {
-                props.updateInvestorDetail(newModalDetail)
+                props.handlePost(newModalDetail, 'updateInvDetail')
                 detailsetVisible(false)
                 setConfirmLoading(false)
             }, 500);
@@ -254,7 +262,7 @@ function InvestorDetail (props) {
         )
         }else{
             return(
-                <div></div>
+                <div>z</div>
             )
             
         }

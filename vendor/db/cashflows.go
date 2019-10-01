@@ -199,6 +199,7 @@ func UpdateInvestmentsInvIDCF(r *http.Request) {
 	if er != nil {
 		panic(er)
 	}
+	fmt.Println(d.CFDate)
 	sqlStatement :=
 		`UPDATE "tblIDB_Investments_CF" 
 		SET "InvID" = $2, "CID"= $3, "CF_Date"= $4, "CF_Amount"= $5

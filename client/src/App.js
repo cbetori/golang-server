@@ -9,36 +9,30 @@ import { InvestorsTableResults } from "./containers/InvestorsContainer"
 import { LoginContainer } from "./containers/LoginContainer"
 import { FundsCardResult } from "./containers/FundsContainer";
 import { InvestorsInvIDContainer, InvestorsVidContainer } from './containers/InvestorsInvIDContainer'
+import { fetchStaticObject } from './actions/get/index'
 const { Content} = Layout;
 
 const App =(props)=> {
   //Keep track of loginstatus and url history
   const [loginStatus, loginStatusSet] = useState()
   const [browserHistory, browserHistorySet] = useState(props.history.location)
-  //prevent api call before login
-  const getComponenets =()=>{
-    props.loadFunds();
-    props.loadFundsSize();
-    props.loadInvestors();
-    props.loadInvestments();
-    props.loadDistributions();
-    props.loadInvestorsInvID();
-    props.loadcfTotals();
-    props.loadDistributionsByFund();
-    props.loadInvestorsInvIDTest()
-    // props.updateInvestorCashFlow();
+  
+  //After login getComponents is called to retreive API fetch requests
+  //Loops through object containing GET urls and executes API request 
+  const getComponents =()=>{
+    for (let object in fetchStaticObject){
+      props.handleStaticGet(object)
+    }
   }
 
   //Updates browser history on change then reloads investory query
-  //if(props.history.location.pathname.slice(0,17) === "/invid/" || props.history.location.pathname.slice(0,15) === "/investors/vid/"){
-    
     if(browserHistory != props.history.location){
       browserHistorySet(props.history.location)
     }
-  // }
+  
   useEffect(()=>{
-    props.loadInvestorsInvIDTest()
-    props.loadInvestorsInvID();
+    props.handleVariableGet('loadInvestorsInvID', browserHistory.pathname)
+    props.handleVariableGet('loadInvestorsInvIDTest', browserHistory.pathname)
   },[browserHistory])
 
   //Only runs one page refresh and locks out user
@@ -48,7 +42,7 @@ const App =(props)=> {
 
   //called if login api provides response
   const handleLogin = ()=>{
-    getComponenets()
+    getComponents()
     loginStatusSet(loggedin())
   }
   //result if logged in
@@ -92,3 +86,27 @@ const App =(props)=> {
 }
 
 export default withRouter(App);
+
+
+/*
+Removed Date: 9/25/2019
+Reason: Replaced with loop to prevent needing to update AppContainer
+*/
+
+// const getComponents =()=>{
+//   props.loadFunds();
+//   props.loadFundsSize();
+//   props.loadInvestors();
+//   props.loadInvestments();
+//   props.loadDistributions();
+//   props.loadInvestorsInvID();
+//   props.loadcfTotals();
+//   props.loadDistributionsByFund();
+// }
+
+// useEffect(()=>{
+//   props.loadInvestorsInvIDTest()
+//   props.loadInvestorsInvID();
+// },[browserHistory])
+
+//if(props.history.location.pathname.slice(0,17) === "/invid/" || props.history.location.pathname.slice(0,15) === "/investors/vid/"){

@@ -64,14 +64,17 @@ func main() {
 	// Route Handlers / Endpoints
 	r.HandleFunc("/api", apiHandler).Methods("GET")
 
-	r.HandleFunc("/api/test/{path}/{id}", controller.Update2).Methods("GET")
+	//handles investor requests (InvID, SID)
+	r.HandleFunc("/api/vid/{id}", controller.InvestorHandler).Methods("GET")
+	r.HandleFunc("/api/sid/{id}", controller.InvestorHandler).Methods("GET")
+
 	r.HandleFunc("/api/login/{username}/{password}", controller.LoginHandler).Methods("GET")
 
 	r.HandleFunc("/api/funds", controller.FundsHandler).Methods("GET")
 	r.HandleFunc("/api/fundstotals", controller.FundsTotalsHandler).Methods("GET")
 
 	r.HandleFunc("/api/investments", controller.InvestmentsHandler).Methods("GET")
-	r.HandleFunc("/api/investments/invid/{id}", controller.InvestmentHandler).Methods("GET")
+	r.HandleFunc("/api/invid/{id}", controller.InvestmentHandler).Methods("GET")
 	r.HandleFunc("/api/investmentsdetail", db.GetInvestmentsTbl).Methods("GET")
 
 	r.HandleFunc("/api/cf/totals", controller.CFTotalsHandler).Methods("GET")

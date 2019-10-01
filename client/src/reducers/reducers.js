@@ -66,25 +66,19 @@ function investorsInvID(state =[], action){
     }
     }else if (action.type === 'INVESTORS_INVID_LOADED_UPDATE_DETAIL'){
       let details = state[0].details
-      console.log(details)
       for (let element in details){
         if(details[element].ID === action.value.ID){
-          console.log(update(state, {
-            0: {details: {[element]: {$set: action.value}}}
-          }))
           return update(state, {
             0: {details: {[element]: {$set: action.value}}}
           })
         }
       }
-      console.log(state[0].details)
     }
   return state
 }
 
 function investorTest(state =[], action){
   if (action.type === 'INVESTORS_INVID_LOADED_TEST'){
-    console.log(action.value)
     return action.value
   }
   return state

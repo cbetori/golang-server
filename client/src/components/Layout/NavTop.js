@@ -16,7 +16,6 @@ export default class NavTop extends React.Component {
     });
   };
   render() {
-    console.log(this.props)
     return (
       <Header style={{background: '#fff', padding: 0}}>
         <Menu style={{maxHeight: 65, display: 'flex', lineHeight: '64px'}} onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">

@@ -14,10 +14,10 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func GetInvestor2(r *http.Request) string {
+func GetInvestor2(r *http.Request, path string) string {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	path := strings.ToUpper(vars["path"])
+	path = strings.ToUpper(path)
 	if path == "SID" {
 		id = `'` + id + `'`
 	}
@@ -26,7 +26,7 @@ func GetInvestor2(r *http.Request) string {
 	err := Db.QueryRow(sqlStatement).Scan(&i.VID, &i.SID, &i.Account_Name)
 	if err != nil {
 		fmt.Println(sqlStatement)
-		log.Fatal(err)
+		panic(err)
 	}
 	result, err := json.Marshal(i)
 	if err != nil {
@@ -35,13 +35,13 @@ func GetInvestor2(r *http.Request) string {
 	return string(result)
 }
 
-func GetInvestment2(r *http.Request) string {
+func GetInvestment2(r *http.Request, path string) string {
 	vars := mux.Vars(r)
 	queryResult := []models.Investments2{}
 	var sqlStatement string = `Select "InvID", "VID", "CID", "Structure_ID", "Feeder", "Blocker", "Inv_Type", 
 	TO_CHAR("Date_Inv", 'mm/dd/yyyy'), TO_CHAR("Date_Eliminate", 'mm/dd/yyyy'), "Gross_Capital", "Net_Capital", 
 	CAST("Gross_Capital" as money) as "Gross_Capital_String", CAST("Net_Capital" as money) as "Net_Capital_String" 
-	FROM "tblIDB_Investments" WHERE "` + strings.ToUpper(vars["path"]) + `"=` + vars["id"]
+	FROM "tblIDB_Investments" WHERE "` + strings.ToUpper(path) + `"=` + vars["id"]
 	rows, err := Db.Query(sqlStatement)
 	if err != nil {
 		panic(err)
@@ -72,7 +72,11 @@ func GetCashFlows2(res string) string {
 	temp := utilities.ArrayToString(vid, ",")
 	fmt.Println(temp)
 	queryResult := []models.InvestmentsCF2{}
-	sqlStatement := `SELECT "InvID", "CID", "Scenario", "CFID", TO_CHAR("CF_Date", 'mm/dd/yyyy'), "CF_Amount", TRIM(TO_CHAR("CF_Amount", '999,999,999.99')) as "CF_Amount_String", TO_CHAR("Time_Stamp", 'dd/mm/yyyy') as "Time_Stamp", "ID" FROM "tblIDB_Investments_CF" WHERE "InvID" IN(` + temp + `)`
+	sqlStatement :=
+		`SELECT "InvID", "CID", "Scenario", "CFID", TO_CHAR("CF_Date", 'mm/dd/yyyy'), "CF_Amount", 
+	TRIM(TO_CHAR("CF_Amount", '999,999,999.99')) as "CF_Amount_String", 
+	TO_CHAR("Time_Stamp", 'dd/mm/yyyy') as "Time_Stamp", "ID" 
+	FROM "tblIDB_Investments_CF" WHERE "InvID" IN(` + temp + `)`
 	rows, err := Db.Query(sqlStatement)
 	if err != nil {
 		panic(err)

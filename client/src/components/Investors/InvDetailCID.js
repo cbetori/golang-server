@@ -6,7 +6,7 @@ import moment from 'moment'
 import numeral from 'numeral'
 
 function InvDetailCID (props) {
-    
+    console.log(props)
 //Props State
     const propsHolder = useSelector( props => props)
     const propsDetails = useSelector(props => props.investorsInvID.map(res =>res.details))
