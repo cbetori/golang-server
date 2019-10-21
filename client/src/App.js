@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Switch, Route, } from "react-router-dom";
 import "antd/dist/antd.css";
-import { Layout } from "antd";
+import { Layout } from "antd"; 
 import Main from "./components/Main/Main";
 import NavTop from "./components/Layout/NavTop";
 import NavSide from "./components/Layout/NavSide";
-import { InvestorsTableResults } from "./containers/InvestorsContainer"
-import { LoginContainer } from "./containers/LoginContainer"
-import { FundsCardResult } from "./containers/FundsContainer";
-import { InvestorsInvIDContainer, InvestorsVidContainer } from './containers/InvestorsInvIDContainer'
-import { fetchStaticObject } from './actions/get/index'
+import { InvestorsTableResults } from "./containers/Investors/InvestorsContainer"
+import { LoginContainer } from "./containers/Main/LoginContainer" 
+import { FundsContainer } from "./containers/Funds/FundsContainer";
+import { InvestorsInvIDContainer } from './containers/Investors/InvestorsInvIDContainer'
+import { fetchStaticObject } from './actions/get'
 const { Content} = Layout;
 
 const App =(props)=> {
@@ -48,18 +48,17 @@ const App =(props)=> {
   //result if logged in
   const loggedin=()=>{
     return(
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: "100vh", overflowX: 'hidden' }}>
       <NavTop location={props.history}/>
       <div id='container' style={{display: 'flex'}}>
       <NavSide />
       <Switch>
         <Content style={{marginLeft: 10}}>
           <Route path="/" exact component={Main} />
-          <Route path="/fund/:id" component={FundsCardResult} />
+          <Route path="/funds" component={FundsContainer} />
           <Route path="/investors" exact component={InvestorsTableResults} />
-          <Route path="/investor/:name" exact component={InvestorsTableResults} />
+          <Route path="/investors/table" exact component={InvestorsTableResults} />
           <Route path="/invid/:id" component={InvestorsInvIDContainer} />
-          <Route path="/vid/:id" component={InvestorsVidContainer} />
           <Route path="/cashflows" component={Main} />
         </Content>
       </Switch>

@@ -28,32 +28,43 @@ export default class NavSide extends React.Component {
         <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+
             <Menu.Item className='navlink' key="1">
               <Icon type="pie-chart" />
               <span>
                 <Link className='navlink' to='/'> Home </Link>
               </span>
             </Menu.Item>
+
+            <Menu.Item className='navlink' key="2">
+              <Icon type="compass" />
+              <span>
+                <Link className='navlink' to='/funds'> Funds </Link>
+              </span>
+            </Menu.Item>
+
             <SubMenu
               key="sub1"
               title={
                 <span>
-                <Icon type="user" />
+                <Icon type="team" />
                 <span>
                     <Link className='navlink' to='/investors'> Investors </Link>
                 </span>
                 </span>
               }
-            >
-              <Menu.Item key="3">Distributions</Menu.Item>
-              <Menu.Item key="4">Transfer</Menu.Item>
-              <Menu.Item key="5">Upload</Menu.Item>
+            > <Menu.Item key="4">
+                <Link className='navlink' to='/investors/table'>
+                  Table
+                </Link>
+              </Menu.Item>
             </SubMenu>
+            
             <SubMenu
               key="sub2"
               title={
                 <span>
-                  <Icon type="team" />
+                  <Icon type="home" />
                   <span>Properties</span>
                 </span>
               }
@@ -61,7 +72,7 @@ export default class NavSide extends React.Component {
               <Menu.Item key="6">Pipeline</Menu.Item>
               <Menu.Item key="8">Performance</Menu.Item>
             </SubMenu>
-            <Menu.Item key="2">
+            <Menu.Item key="3">
               <Icon type="desktop" />
               <span>
               <Link className='navlink' to='/cashflows'> Cashflows </Link>

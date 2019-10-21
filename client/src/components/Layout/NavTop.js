@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Menu, Icon, Input } from 'antd';
-import {SearchResult} from '../../containers/SearchCont'
+import {SearchResult} from '../../containers/Layout/SearchCont'
 const { Header} = Layout;
 const { SubMenu } = Menu;
 
