@@ -9,7 +9,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-//Database setup
+//Database setup 
 var Db *sql.DB
 
 func Connection() {
