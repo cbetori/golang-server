@@ -15,13 +15,13 @@ function Login(props){
     //Handles login btn or "enter" key updates login based on  api response or throws error
     function loginbtn(e){
         e.preventDefault()
-        props.loginValue([userName, password])
+        props.handleLogin([userName, password])
         setTimeout(()=>{
             invalidSet("Incorrect username or password")
         },500)
     } 
 
-    if (props.loginState['ids'] === undefined){
+    if (props.loginState['ids'] != undefined){
         props.handleLogin()
     }
 
