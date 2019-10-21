@@ -1,0 +1,28 @@
+.navside{
+  max-width: 200 
+}
+
+.container{
+  display: inline-flex;
+  margin: 50px;
+}
+
+.autoMargin{
+  margin: auto;
+}
+.navlink{
+  color: #8c959e;
+}
+
+.navlink:hover{
+  color: white;
+}
+
+.navlink::selection{
+  color: white;
+}
+
+.mainContainer{
+  border-bottom: 1px solid grey;
+  font-size: 26px;
+}

@@ -148,7 +148,7 @@ function InvestorDetail (props) {
         }
 
         function handleOkDetail () {
-            setConfirmLoading(true)
+            setConfirmLoading(true) 
             setTimeout(() => {
                 props.handlePost(newModalDetail, 'updateInvDetail')
                 detailsetVisible(false)

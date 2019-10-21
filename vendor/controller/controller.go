@@ -4,35 +4,18 @@ import (
 	"db"
 	"fmt"
 	"net/http"
-	"strings"
 )
 
 //USERS
-
-func wrapString(x string) string {
-	x = `"` + x + `"`
-	return x
-}
-
-func InvestorHandler(w http.ResponseWriter, r *http.Request) {
-	path := strings.Split(r.URL.Path, "/")
-	fmt.Println("Path Check ", path[2])
-	x := db.GetInvestor2(r, path[2])
-	var res string
-	if path[2] == "vid" {
-		y := db.GetInvestment2(r, path[2])
-		z := db.GetCashFlows2(y)
-		res = "{" + wrapString("investor") + ":" + x + "," + wrapString("investment") + ":" + y + "," + wrapString("cashflow") + ":" + z + "}"
-	} else {
-		res = "{" + wrapString("investor") + ":" + x + "}"
-	}
-
-	fmt.Fprintf(w, res)
-}
-
 //api/login
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	x := db.CheckUser(r)
+	fmt.Fprintf(w, x)
+}
+
+//Search Results
+func InvstmentsSearchHandler(w http.ResponseWriter, r *http.Request) {
+	x := db.GetInvestmentResults(r)
 	fmt.Fprintf(w, x)
 }
 
@@ -46,7 +29,6 @@ func FundsHandler(w http.ResponseWriter, r *http.Request) {
 //api/fundstotals
 func FundsTotalsHandler(w http.ResponseWriter, r *http.Request) {
 	x := db.GetFundsCapitalTotals(r)
-
 	fmt.Fprintf(w, x)
 }
 

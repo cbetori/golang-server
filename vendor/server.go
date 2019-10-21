@@ -65,10 +65,12 @@ func main() {
 	r.HandleFunc("/api", apiHandler).Methods("GET")
 
 	//handles investor requests (InvID, SID)
-	r.HandleFunc("/api/vid/{id}", controller.InvestorHandler).Methods("GET")
-	r.HandleFunc("/api/sid/{id}", controller.InvestorHandler).Methods("GET")
+	// r.HandleFunc("/api/vid/{id}", controller.InvestorHandler).Methods("GET")
+	// r.HandleFunc("/api/sid/{id}", controller.InvestorHandler).Methods("GET")
 
 	r.HandleFunc("/api/login/{username}/{password}", controller.LoginHandler).Methods("GET")
+
+	r.HandleFunc("/api/invsearch", controller.InvstmentsSearchHandler).Methods("GET")
 
 	r.HandleFunc("/api/funds", controller.FundsHandler).Methods("GET")
 	r.HandleFunc("/api/fundstotals", controller.FundsTotalsHandler).Methods("GET")

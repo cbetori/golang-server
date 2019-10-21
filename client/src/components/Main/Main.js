@@ -1,11 +1,11 @@
 import React from "react";
 import { Layout } from 'antd'
 import Cards from './Cards'
-import FundsSizeContainer from '../../containers/FundsSizeContainer'
-import {FundsCardResult} from '../../containers/FundsContainer'
-import { DistroChartContainer } from '../../containers/DistributionContainer'
-import { DistroFunnelContainer } from '../../containers/DistributionTotalsContainer'
-import { DistroFundsChartContainer } from '../../containers/DistrbutionTotalsFundsContainer'
+import FundsSizeContainer from '../../containers/Main/FundsSizeContainer'
+import {FundsCardResult} from '../../containers/Funds/FundsContainer'
+import { DistroChartContainer } from '../../containers/Main/DistributionContainer'
+import { DistroFunnelContainer } from '../../containers/Main/DistributionTotalsContainer'
+import { DistroFundsChartContainer } from '../../containers/Main/DistrbutionTotalsFundsContainer'
 
 //const { Content } = Layout;
 

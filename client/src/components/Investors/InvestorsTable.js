@@ -60,10 +60,10 @@ class InvestorsTable extends Component{
 
     render(){
       let columns = [
-        {title: 'VID', dataIndex:'VID',  key: 'VID', ...this.getColumnSearchProps('VID'), render: text => <Link  to={"/vid/"+text}>{text}</Link>},
-        {title: 'SID', dataIndex:'SID', key: 'SID', ...this.getColumnSearchProps('SID'), render: text => <Link  to={"/sid/"+text}>{text}</Link>},
         {title: 'InvID', dataIndex:'InvID',  key: 'InvID', ...this.getColumnSearchProps('InvID'), render: text => <Link  to={"/invid/"+text}>{text}</Link>},
-        {title: 'CID', dataIndex:'CID',  key: 'CID', ...this.getColumnSearchProps('CID'), render: text => <Link  to={"/cid/"+text}>{text}</Link>},
+        {title: 'VID', dataIndex:'VID',  key: 'VID', ...this.getColumnSearchProps('VID')},
+        {title: 'SID', dataIndex:'SID', key: 'SID', ...this.getColumnSearchProps('SID')},
+        {title: 'CID', dataIndex:'CID',  key: 'CID', ...this.getColumnSearchProps('CID')},
         {title: 'Name', dataIndex:'Account_Name', key: 'Account_Name', ...this.getColumnSearchProps('Account_Name')},
         {title: 'Feeder', dataIndex:'Feeder', key: 'Feeder', ...this.getColumnSearchProps('Feeder')},
         {title: 'Inv_Type', dataIndex:'Inv_Type', key: 'Inv_Type', ...this.getColumnSearchProps('Inv_Type')},
